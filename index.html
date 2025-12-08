@@ -141,21 +141,29 @@
       border: 2px solid var(--tile-border);
       border-radius: 6px;
       color: var(--tile-text);
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
     }
 
-    /* Animations */
+    /* 🔥 ANIMASI AMAN — TIDAK MEMBALIK TEKS */
     .tile.reveal {
-      animation: flip 0.5s ease forwards;
+      animation: popIn 0.4s ease forwards;
     }
 
-    @keyframes flip {
-      0% { transform: rotateX(0); }
-      50% { transform: rotateX(90deg); opacity: 0.5; }
-      51% { opacity: 0; }
-      100% { transform: rotateX(180deg); opacity: 1; }
+    @keyframes popIn {
+      0% { 
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      50% { 
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% { 
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .tile.correct { background: var(--correct); border-color: var(--correct); }
@@ -317,7 +325,7 @@
   <canvas id="confetti-canvas"></canvas>
 
   <script>
-    // 📚 Kamus kata (dikurasi agar cocok & familiar)
+    // 📚 Kamus kata (5 huruf pertama diambil saat evaluasi)
     const WORDS = {
       buah: ["apel", "jeruk", "mangga", "pisang", "semangka", "nanas", "anggur", "melon", "jambu", "pepaya"],
       hewan: ["kucing", "anjing", "harimau", "gajah", "singa", "burung", "ular", "monyet", "kelinci", "ikan"],
@@ -368,7 +376,13 @@
       shareBtn.style.display = "none";
       initGrid();
       
-      // Highlight theme button
+      // Reset keyboard
+      document.querySelectorAll(".key").forEach(key => {
+        key.className = key.dataset.key === "ENTER" ? "key enter" :
+                       key.dataset.key === "BACKSPACE" ? "key backspace" :
+                       "key";
+      });
+
       themeBtns.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.theme === theme);
       });
@@ -377,7 +391,6 @@
     // 🖱️ Event keyboard
     document.addEventListener("keydown", (e) => {
       if (gameOver) return;
-      
       const key = e.key.toUpperCase();
       
       if (/^[A-Z]$/.test(key)) {
@@ -387,11 +400,9 @@
           tile.classList.add("reveal");
           currentCol++;
         }
-      } 
-      else if (e.key === "Enter") {
+      } else if (e.key === "Enter") {
         submitGuess();
-      } 
-      else if (e.key === "Backspace") {
+      } else if (e.key === "Backspace") {
         deleteLetter();
       }
     });
@@ -400,7 +411,6 @@
     document.querySelectorAll(".key").forEach(key => {
       key.addEventListener("click", () => {
         if (gameOver) return;
-        
         const val = key.dataset.key;
         if (val === "ENTER") {
           submitGuess();
@@ -441,35 +451,26 @@
         guess += tile.textContent.toLowerCase();
       }
 
-      // Validasi panjang (beberapa tema punya kata 5-7 huruf, kita ambil 5 huruf pertama)
-      if (guess.length !== 5) {
-        shakeGrid();
-        return;
-      }
-
       // Evaluasi
       const result = evaluateGuess(guess);
       attempts.push({ guess, result });
 
-      // Animasi & update warna
-      setTimeout(() => {
-        for (let i = 0; i < 5; i++) {
-          const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
-          tile.classList.add(result[i]);
-          
-          // Update keyboard
-          const keyEl = document.querySelector(`.key[data-key="${guess[i].toUpperCase()}"]`);
-          if (result[i] === "correct") {
-            keyEl.className = "key correct";
-          } else if (result[i] === "present" && !keyEl.classList.contains("correct")) {
-            keyEl.className = "key present";
-          } else if (result[i] === "absent" && 
-                    !keyEl.classList.contains("correct") && 
-                    !keyEl.classList.contains("present")) {
-            keyEl.className = "key absent";
-          }
+      // Update warna tile & keyboard
+      for (let i = 0; i < 5; i++) {
+        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
+        tile.classList.add(result[i]);
+        
+        const keyEl = document.querySelector(`.key[data-key="${guess[i].toUpperCase()}"]`);
+        if (result[i] === "correct") {
+          keyEl.className = "key correct";
+        } else if (result[i] === "present" && !keyEl.classList.contains("correct")) {
+          keyEl.className = "key present";
+        } else if (result[i] === "absent" && 
+                  !keyEl.classList.contains("correct") && 
+                  !keyEl.classList.contains("present")) {
+          keyEl.className = "key absent";
         }
-      }, 300);
+      }
 
       // Cek kemenangan
       if (guess === targetWord.substring(0,5)) {
@@ -477,8 +478,8 @@
           resultEl.innerHTML = `<span class="win">🎉 SELAMAT! Jawaban: <strong>${targetWord}</strong></span>`;
           gameOver = true;
           shareBtn.style.display = "inline-block";
-          createConfetti();
-        }, 1000);
+          setTimeout(createConfetti, 300);
+        }, 600);
         return;
       }
 
@@ -488,7 +489,7 @@
           resultEl.innerHTML = `<span class="lose">❌ Jawaban: <strong>${targetWord}</strong></span>`;
           gameOver = true;
           shareBtn.style.display = "inline-block";
-        }, 1000);
+        }, 600);
         return;
       }
 
@@ -497,29 +498,27 @@
       currentCol = 0;
     }
 
-    // 🔍 Evaluasi tebakan
+    // 🔍 Evaluasi tebakan — ✅ LOGIKA BENAR (Wordle asli)
     function evaluateGuess(guess) {
       const result = Array(5).fill("absent");
-      const target = targetWord.substring(0,5); // ambil 5 huruf pertama
-      
-      // Cek "correct" dulu
-      const used = Array(5).fill(false);
+      let target = targetWord.substring(0,5); // ambil 5 huruf pertama
+
+      // Step 1: tandai correct (benar & posisi benar)
       for (let i = 0; i < 5; i++) {
         if (guess[i] === target[i]) {
           result[i] = "correct";
-          used[i] = true;
+          target = target.substring(0, i) + '*' + target.substring(i + 1); // tandai dipakai
         }
       }
 
-      // Cek "present"
+      // Step 2: tandai present (ada di target, tapi posisi salah)
       for (let i = 0; i < 5; i++) {
-        if (result[i] === "absent") {
-          for (let j = 0; j < 5; j++) {
-            if (!used[j] && guess[i] === target[j]) {
-              result[i] = "present";
-              used[j] = true;
-              break;
-            }
+        if (result[i] !== "correct") {
+          const letter = guess[i];
+          const idx = target.indexOf(letter);
+          if (idx !== -1) {
+            result[i] = "present";
+            target = target.substring(0, idx) + '*' + target.substring(idx + 1);
           }
         }
       }
@@ -593,20 +592,29 @@
         ).join("") + "\n";
       }
       
-      // Isi baris kosong
       for (let i = maxRows; i < 6; i++) {
         emojiGrid += "⬛⬛⬛⬛⬛\n";
       }
       
       const text = `Wordle+ (${currentTheme})\n${emojiGrid}\n#WordlePlus`;
       
-      if (navigator.clipboard) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
           alert("📋 Hasil disalin! Tempel di WhatsApp/IG story 😊");
-        });
+        }).catch(() => fallbackCopy(text));
       } else {
-        prompt("Salin teks berikut:", text);
+        fallbackCopy(text);
       }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      alert("📋 Hasil disalin! Silakan tempel di medsos.");
     }
 
     // 🖱️ Event tema
@@ -619,8 +627,9 @@
     // 🖥️ Init
     window.onload = () => {
       newGame();
-      // Auto-focus agar keyboard muncul di HP
-      document.body.addEventListener("click", () => {}, { once: true });
+      // Hard reset CSS transform (antisipasi cache lama)
+      const tiles = document.querySelectorAll('.tile');
+      tiles.forEach(t => t.style.transform = 'scale(1)');
     };
 
     // Responsif canvas

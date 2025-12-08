@@ -1,254 +1,634 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paslon 01</title>
-<style>
-/* Reset & base */
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background:#0d1b2a; color:#fff; line-height:1.6; overflow-x:hidden; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wordle+ ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #121213;
+      --surface: #1a1a1b;
+      --tile: #252526;
+      --tile-border: #3a3a3c;
+      --tile-text: #ffffff;
+      --correct: #538d4e;
+      --present: #b59f3b;
+      --absent: #3a3a3c;
+      --key-bg: #818384;
+      --key-hover: #a4a6a7;
+      --key-correct: var(--correct);
+      --key-present: var(--present);
+      --key-absent: #565758;
+      --text: #e0e0e0;
+      --title: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
 
-/* Neon animation */
-@keyframes neonGlow {
- 0%,100% { text-shadow:0 0 5px #00f,0 0 10px #00f,0 0 20px #00f; }
- 50% { text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 40px #00f; }
-}
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #ffffff;
+        --surface: #f3f4f6;
+        --tile: #ffffff;
+        --tile-border: #d1d5db;
+        --tile-text: #111827;
+        --key-bg: #d4d6da;
+        --key-hover: #bdc0c4;
+        --key-absent: #8e8fa0;
+        --text: #374151;
+        --title: #1f2937;
+        --shadow: rgba(0, 0, 0, 0.1);
+      }
+    }
 
-/* Header */
-header {
-    background: linear-gradient(135deg,#001f3f,#004080);
-    text-align:center;
-    padding:60px 20px;
-    border-bottom-left-radius:30px;
-    border-bottom-right-radius:30px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.5);
-}
-header h1 { font-size:3em; margin-bottom:10px; color:#fff; animation:neonGlow 2s infinite alternate; }
-header p { font-size:1.2em; color:#cce6ff; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Navbar */
-nav {
-    background:#001f3f;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:12px 20px;
-    position:sticky;
-    top:0;
-    z-index:100;
-    box-shadow:0 4px 15px rgba(0,0,0,0.5);
-}
-nav .logo { color:#fff; font-weight:bold; font-size:20px; text-shadow:0 0 5px #0ff,0 0 10px #0ff; }
-nav ul { list-style:none; display:flex; gap:20px; transition:max-height 0.3s ease-in-out; }
-nav ul li a { color:#fff; text-decoration:none; font-weight:600; transition: color 0.3s; }
-nav ul li a:hover { color:#00f; text-shadow:0 0 5px #0ff,0 0 10px #0ff; }
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-/* Hamburger */
-.hamburger { display:none; flex-direction: column; cursor:pointer; width:25px; height:20px; justify-content:space-between; }
-.hamburger span { height:3px; width:100%; background:#00f; border-radius:2px; transition: all 0.4s; }
-.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
-.hamburger.active span:nth-child(2) { opacity:0; }
-.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+    .container {
+      max-width: 500px;
+      width: 100%;
+    }
 
-/* Sections */
-section { max-width:1100px; margin:50px auto; padding:0 20px; opacity:0; transform:translateY(20px); transition:0.8s ease-out; }
-section.show { opacity:1; transform:translateY(0); }
+    header {
+      text-align: center;
+      margin: 20px 0 30px;
+    }
 
-/* Hero */
-.hero {
-    text-align:center;
-    background:linear-gradient(135deg,#001f3f,#003366);
-    color:#fff;
-    padding:80px 20px;
-    border-radius:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.7);
-    border:2px solid #00f;
-}
-.hero h2 { margin-bottom:15px; }
-.hero p { color:#cce6ff; font-size:1.2em; margin-top:10px; }
-.hero button {
-    margin-top:25px;
-    padding:15px 30px;
-    font-size:16px;
-    font-weight:bold;
-    color:#fff;
-    background:none;
-    border:2px solid #00f;
-    border-radius:10px;
-    cursor:pointer;
-    box-shadow:0 0 10px #00f,0 0 20px #0ff,0 0 30px #00f;
-    transition:0.3s all;
-}
-.hero button:hover { background:#00f; color:#fff; box-shadow:0 0 20px #0ff,0 0 30px #00f,0 0 40px #0ff; }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--title);
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #6a0dad, #8e2de2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-/* Hero Photo */
-.hero-photo {
-    margin-top:20px;
-    margin-bottom:30px; /* Jarak antara gambar dan teks */
-    display:flex;
-    justify-content:center;
-    opacity:0;
-    transform: scale(0.85);
-    animation: fadeScale 1s forwards 0.5s;
-}
-.hero-photo img {
-    width:180px;
-    height:auto;
-    border-radius:15px;
-    border:2px solid #00f;
-    box-shadow:0 0 15px #0ff,0 0 25px #00f;
-}
-@keyframes fadeScale { to { opacity:1; transform: scale(1); } }
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
 
-/* Kandidat */
-.kandidat { display:flex; justify-content:space-around; flex-wrap:wrap; gap:25px; margin-top:30px; }
-.kandidat div {
-    background:#002244;
-    padding:25px 20px;
-    border-radius:20px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.5);
-    text-align:center;
-    flex:1 1 280px;
-    max-width:320px;
-    transition: transform 0.4s, box-shadow 0.4s;
-    border:2px solid #00f;
-}
-.kandidat div:hover { transform:translateY(-8px); box-shadow:0 10px 25px rgba(0,0,0,0.8),0 0 15px #0ff; }
-.kandidat img { width:150px; height:150px; border-radius:50%; object-fit:cover; margin-bottom:15px; border:2px solid #00f; }
-.kandidat h3, .kandidat p { color:#fff; }
+    /* Theme selector */
+    .theme-select {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
 
-/* Visi & Program & Kontak */
-.visi-misi, .program, #kontak {
-    background:#001f3f;
-    border:2px solid #00f;
-    border-radius:20px;
-    padding:35px 30px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.6);
-}
-h2 { color:#00f; text-align:center; margin-bottom:20px; text-shadow:0 0 5px #0ff,0 0 10px #0ff; }
-ul { list-style: disc; padding-left:25px; margin-top:10px; }
-ul li { margin-bottom:10px; color:#fff; }
+    .theme-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      background: var(--tile);
+      color: var(--text);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
 
-/* Footer */
-footer {
-    text-align:center;
-    padding:25px;
-    background:#001f3f;
-    color:#fff;
-    box-shadow:0 -4px 10px rgba(0,0,0,0.5);
-    border-top-left-radius:20px;
-    border-top-right-radius:20px;
-}
+    .theme-btn:hover {
+      background: #3a3a3c;
+    }
 
-/* Responsive */
-@media(max-width:768px){
-    nav ul { flex-direction:column; position:absolute; top:55px; right:10px; width:200px; background:#001f3f; overflow:hidden; max-height:0; border-radius:10px; }
-    nav ul.show { max-height:300px; padding-bottom:10px; }
-    nav ul li { text-align:left; padding:10px 15px; }
-    .hamburger { display:flex; }
-}
-</style>
+    .theme-btn.active {
+      background: var(--correct);
+      color: white;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin: 0 auto 20px;
+      max-width: 400px;
+    }
+
+    .row {
+      display: contents;
+    }
+
+    .tile {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: var(--tile);
+      border: 2px solid var(--tile-border);
+      border-radius: 6px;
+      color: var(--tile-text);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animations */
+    .tile.reveal {
+      animation: flip 0.5s ease forwards;
+    }
+
+    @keyframes flip {
+      0% { transform: rotateX(0); }
+      50% { transform: rotateX(90deg); opacity: 0.5; }
+      51% { opacity: 0; }
+      100% { transform: rotateX(180deg); opacity: 1; }
+    }
+
+    .tile.correct { background: var(--correct); border-color: var(--correct); }
+    .tile.present { background: var(--present); border-color: var(--present); }
+    .tile.absent  { background: var(--absent); border-color: var(--absent); }
+
+    /* Keyboard */
+    .keyboard {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .keyboard-row {
+      display: flex;
+      justify-content: center;
+      margin: 4px 0;
+    }
+
+    .key {
+      flex: 1;
+      min-height: 56px;
+      margin: 0 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--key-bg);
+      color: var(--tile-text);
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .key:hover {
+      background: var(--key-hover);
+    }
+
+    .key.wide {
+      flex: 1.5;
+    }
+
+    .key.enter {
+      background: var(--present);
+      flex: 1.8;
+    }
+
+    .key.backspace {
+      background: var(--key-bg);
+      flex: 1.2;
+      font-size: 0.8rem;
+    }
+
+    .key.correct { background: var(--key-correct) !important; }
+    .key.present { background: var(--key-present) !important; }
+    .key.absent  { background: var(--key-absent) !important; }
+
+    /* Result & Toast */
+    #result {
+      min-height: 2rem;
+      margin: 20px 0;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .win { color: var(--correct); }
+    .lose { color: var(--absent); }
+
+    #share-btn {
+      padding: 12px 24px;
+      background: var(--present);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Confetti */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      h1 { font-size: 2rem; }
+      .tile { font-size: 1.5rem; }
+      .key { min-height: 50px; font-size: 0.9rem; }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1>Wordle+</h1>
+      <p class="subtitle">Tebak kata dalam 6 percobaan!</p>
+    </header>
 
-<header>
-    <h1>Paslon 01</h1>
-    <p>Dari suara muda tercipta sekolah bijaksana</p>
-</header>
-
-<nav>
-    <div class="logo">OSIS 2025</div>
-    <ul>
-        <li><a href="#home">Beranda</a></li>
-        <li><a href="#kandidat">Kandidat</a></li>
-        <li><a href="#visi">Visi & Misi</a></li>
-        <li><a href="#program">Program Kerja</a></li>
-        <li><a href="#kontak">Kontak</a></li>
-    </ul>
-    <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="theme-select">
+      <button class="theme-btn active" data-theme="buah">🍉 Buah</button>
+      <button class="theme-btn" data-theme="hewan">🐶 Hewan</button>
+      <button class="theme-btn" data-theme="negara">🌍 Negara</button>
+      <button class="theme-btn" data-theme="film">🎬 Film</button>
     </div>
-</nav>
 
-<section id="home" class="hero">
-    <div class="hero-photo">
-        <img src="IMG-20251008-WA0004.jpg" alt="Ketua & Wakil OSIS">
+    <div class="grid" id="grid"></div>
+
+    <div id="result"></div>
+    <button id="share-btn" onclick="shareResult()">📤 Bagikan Hasil</button>
+
+    <div class="keyboard" id="keyboard">
+      <div class="keyboard-row">
+        <div class="key" data-key="Q">Q</div>
+        <div class="key" data-key="W">W</div>
+        <div class="key" data-key="E">E</div>
+        <div class="key" data-key="R">R</div>
+        <div class="key" data-key="T">T</div>
+        <div class="key" data-key="Y">Y</div>
+        <div class="key" data-key="U">U</div>
+        <div class="key" data-key="I">I</div>
+        <div class="key" data-key="O">O</div>
+        <div class="key" data-key="P">P</div>
+      </div>
+      <div class="keyboard-row">
+        <div class="key" data-key="A">A</div>
+        <div class="key" data-key="S">S</div>
+        <div class="key" data-key="D">D</div>
+        <div class="key" data-key="F">F</div>
+        <div class="key" data-key="G">G</div>
+        <div class="key" data-key="H">H</div>
+        <div class="key" data-key="J">J</div>
+        <div class="key" data-key="K">K</div>
+        <div class="key" data-key="L">L</div>
+      </div>
+      <div class="keyboard-row">
+        <div class="key enter" data-key="ENTER">⏎ Enter</div>
+        <div class="key" data-key="Z">Z</div>
+        <div class="key" data-key="X">X</div>
+        <div class="key" data-key="C">C</div>
+        <div class="key" data-key="V">V</div>
+        <div class="key" data-key="B">B</div>
+        <div class="key" data-key="N">N</div>
+        <div class="key" data-key="M">M</div>
+        <div class="key backspace" data-key="BACKSPACE">⌫</div>
+      </div>
     </div>
-    <h2>Selamat Datang di Kampanye Kami!</h2>
-    <p>Kami berkomitmen untuk membawa perubahan positif di sekolah kita. Dukung kami dengan suara Anda!</p>
-</section>
+  </div>
 
-<section id="kandidat">
-    <h2>Tentang Kandidat</h2>
-    <div class="kandidat">
-        <div>
-            <h3>Habil Qodam Wahyudi</h3>
-            <p>Calon Ketua OSIS</p>
-            <p>Siswa kelas XI TAV</p>
-        </div>
-        <div>
-            <h3>Ahmad Safaulloh Jaelani</h3>
-            <p>Calon Wakil Ketua OSIS</p>
-            <p>Siswa kelas X TAV</p>
-        </div>
-    </div>
-</section>
+  <canvas id="confetti-canvas"></canvas>
 
-<section id="visi" class="visi-misi">
-    <h2>Visi & Misi</h2>
-    <h3>Visi:</h3>
-    <p>Mewujudkan lingkungan sekolah yang harmonis, hijau, dan peduli, dengan memperkuat komunikasi antara siswa, guru, dan kepala sekolah serta menciptakan ruang aman bagi siswa untuk berkembang secara emosional dan sosial.</p>
-    <h3>Misi:</h3>
-    <ul>
-        <li>Membangun komunikasi dua arah yang aktif dan terbuka antara siswa, guru, dan kepala sekolah untuk menampung serta menindaklanjuti aspirasi siswa.</li>
-        <li>Menginisiasi program penghijauan sekolah untuk menciptakan lingkungan yang sejuk, sehat, dan nyaman bagi seluruh warga sekolah.</li>
-        <li>Mengembangkan program konselor sebaya sebagai wadah siswa untuk saling mendukung dan berbagi cerita secara positif.</li>
-    </ul>
-</section>
+  <script>
+    // 📚 Kamus kata (dikurasi agar cocok & familiar)
+    const WORDS = {
+      buah: ["apel", "jeruk", "mangga", "pisang", "semangka", "nanas", "anggur", "melon", "jambu", "pepaya"],
+      hewan: ["kucing", "anjing", "harimau", "gajah", "singa", "burung", "ular", "monyet", "kelinci", "ikan"],
+      negara: ["indonesia", "malaysia", "singapura", "thailand", "vietnam", "filipina", "jepang", "korea", "china", "india"],
+      film: ["avatar", "titanic", "inception", "matrix", "avengers", "joker", "frozen", "toy", "harry", "spider"]
+    };
 
-<section id="program" class="program">
-    <h2>Program Kerja</h2>
-    <ul>
-        <li><strong>Suara Siswa:</strong> Menampung aspirasi siswa dan memperkuat partisipasi aktif dalam kegiatan sekolah.</li>
-        <li><strong>Penghijauan:</strong> Menginisiasi program penghijauan untuk menciptakan lingkungan sekolah yang asri dan nyaman.</li>
-        <li><strong>Konselor Sebaya:</strong> Mengembangkan program konselor sebaya sebagai wadah siswa untuk saling mendukung dan berbagi cerita secara positif.</li>
-    </ul>
-</section>
+    // 🔧 State
+    let currentTheme = "buah";
+    let targetWord = "";
+    let currentRow = 0;
+    let currentCol = 0;
+    let gameOver = false;
+    let attempts = [];
 
-<footer>
-    <p>&copy; 2025 Suara Kita Bersama. Semua hak dilindungi</p>
-</footer>
+    // DOM
+    const grid = document.getElementById("grid");
+    const resultEl = document.getElementById("result");
+    const shareBtn = document.getElementById("share-btn");
+    const themeBtns = document.querySelectorAll(".theme-btn");
 
-<script>
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e){
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    // 🎨 Inisialisasi grid
+    function initGrid() {
+      grid.innerHTML = "";
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement("div");
+        row.className = "row";
+        for (let j = 0; j < 5; j++) {
+          const tile = document.createElement("div");
+          tile.className = "tile";
+          tile.dataset.row = i;
+          tile.dataset.col = j;
+          row.appendChild(tile);
+        }
+        grid.appendChild(row);
+      }
+    }
+
+    // 🌟 Mulai game baru
+    function newGame(theme = currentTheme) {
+      currentTheme = theme;
+      targetWord = WORDS[theme][Math.floor(Math.random() * WORDS[theme].length)].toLowerCase();
+      currentRow = 0;
+      currentCol = 0;
+      gameOver = false;
+      attempts = [];
+      resultEl.textContent = "";
+      shareBtn.style.display = "none";
+      initGrid();
+      
+      // Highlight theme button
+      themeBtns.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.theme === theme);
+      });
+    }
+
+    // 🖱️ Event keyboard
+    document.addEventListener("keydown", (e) => {
+      if (gameOver) return;
+      
+      const key = e.key.toUpperCase();
+      
+      if (/^[A-Z]$/.test(key)) {
+        if (currentCol < 5) {
+          const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
+          tile.textContent = key;
+          tile.classList.add("reveal");
+          currentCol++;
+        }
+      } 
+      else if (e.key === "Enter") {
+        submitGuess();
+      } 
+      else if (e.key === "Backspace") {
+        deleteLetter();
+      }
     });
-});
 
-// Hamburger toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('nav ul');
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('show');
-    hamburger.classList.toggle('active');
-});
-
-// Fade-in scroll animation
-const sections = document.querySelectorAll('section');
-window.addEventListener('scroll', () => {
-    const triggerBottom = window.innerHeight / 5 * 4;
-    sections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        if(sectionTop < triggerBottom) { section.classList.add('show'); }
+    // 🖱️ Klik keyboard visual
+    document.querySelectorAll(".key").forEach(key => {
+      key.addEventListener("click", () => {
+        if (gameOver) return;
+        
+        const val = key.dataset.key;
+        if (val === "ENTER") {
+          submitGuess();
+        } else if (val === "BACKSPACE") {
+          deleteLetter();
+        } else if (/^[A-Z]$/.test(val)) {
+          if (currentCol < 5) {
+            const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
+            tile.textContent = val;
+            tile.classList.add("reveal");
+            currentCol++;
+          }
+        }
+      });
     });
-});
-</script>
 
+    // ❌ Hapus huruf
+    function deleteLetter() {
+      if (currentCol > 0) {
+        currentCol--;
+        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
+        tile.textContent = "";
+        tile.classList.remove("reveal");
+      }
+    }
+
+    // ✅ Submit tebakan
+    function submitGuess() {
+      if (currentCol !== 5) {
+        shakeGrid();
+        return;
+      }
+
+      // Ambil tebakan
+      let guess = "";
+      for (let i = 0; i < 5; i++) {
+        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
+        guess += tile.textContent.toLowerCase();
+      }
+
+      // Validasi panjang (beberapa tema punya kata 5-7 huruf, kita ambil 5 huruf pertama)
+      if (guess.length !== 5) {
+        shakeGrid();
+        return;
+      }
+
+      // Evaluasi
+      const result = evaluateGuess(guess);
+      attempts.push({ guess, result });
+
+      // Animasi & update warna
+      setTimeout(() => {
+        for (let i = 0; i < 5; i++) {
+          const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
+          tile.classList.add(result[i]);
+          
+          // Update keyboard
+          const keyEl = document.querySelector(`.key[data-key="${guess[i].toUpperCase()}"]`);
+          if (result[i] === "correct") {
+            keyEl.className = "key correct";
+          } else if (result[i] === "present" && !keyEl.classList.contains("correct")) {
+            keyEl.className = "key present";
+          } else if (result[i] === "absent" && 
+                    !keyEl.classList.contains("correct") && 
+                    !keyEl.classList.contains("present")) {
+            keyEl.className = "key absent";
+          }
+        }
+      }, 300);
+
+      // Cek kemenangan
+      if (guess === targetWord.substring(0,5)) {
+        setTimeout(() => {
+          resultEl.innerHTML = `<span class="win">🎉 SELAMAT! Jawaban: <strong>${targetWord}</strong></span>`;
+          gameOver = true;
+          shareBtn.style.display = "inline-block";
+          createConfetti();
+        }, 1000);
+        return;
+      }
+
+      // Cek kekalahan
+      if (currentRow === 5) {
+        setTimeout(() => {
+          resultEl.innerHTML = `<span class="lose">❌ Jawaban: <strong>${targetWord}</strong></span>`;
+          gameOver = true;
+          shareBtn.style.display = "inline-block";
+        }, 1000);
+        return;
+      }
+
+      // Lanjut ke baris berikutnya
+      currentRow++;
+      currentCol = 0;
+    }
+
+    // 🔍 Evaluasi tebakan
+    function evaluateGuess(guess) {
+      const result = Array(5).fill("absent");
+      const target = targetWord.substring(0,5); // ambil 5 huruf pertama
+      
+      // Cek "correct" dulu
+      const used = Array(5).fill(false);
+      for (let i = 0; i < 5; i++) {
+        if (guess[i] === target[i]) {
+          result[i] = "correct";
+          used[i] = true;
+        }
+      }
+
+      // Cek "present"
+      for (let i = 0; i < 5; i++) {
+        if (result[i] === "absent") {
+          for (let j = 0; j < 5; j++) {
+            if (!used[j] && guess[i] === target[j]) {
+              result[i] = "present";
+              used[j] = true;
+              break;
+            }
+          }
+        }
+      }
+
+      return result;
+    }
+
+    // 🌀 Animasi error
+    function shakeGrid() {
+      grid.style.animation = "shake 0.5s";
+      setTimeout(() => grid.style.animation = "", 500);
+    }
+
+    // 🎉 Confetti
+    function createConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const confettiCount = 150;
+      const confetti = [];
+      const colors = ["#ff416c", "#00b09b", "#fed330", "#8e2de2", "#00c853"];
+
+      for (let i = 0; i < confettiCount; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: -10,
+          size: Math.random() * 4 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: Math.random() * 3 + 2,
+          angle: Math.random() * Math.PI * 2
+        });
+      }
+
+      let frames = 0;
+      const animate = () => {
+        if (frames > 60) {
+          canvas.style.display = 'none';
+          return;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        confetti.forEach(c => {
+          c.y += c.speed;
+          c.x += Math.sin(c.angle) * 0.5;
+          c.angle += 0.05;
+          
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
+          ctx.fillStyle = c.color;
+          ctx.fill();
+        });
+        
+        frames++;
+        requestAnimationFrame(animate);
+      };
+
+      canvas.style.display = 'block';
+      animate();
+    }
+
+    // 📤 Bagikan hasil
+    function shareResult() {
+      let emojiGrid = "";
+      const maxRows = Math.min(attempts.length, 6);
+      
+      for (let i = 0; i < maxRows; i++) {
+        emojiGrid += attempts[i].result.map(r => 
+          r === "correct" ? "🟩" : r === "present" ? "🟨" : "⬛"
+        ).join("") + "\n";
+      }
+      
+      // Isi baris kosong
+      for (let i = maxRows; i < 6; i++) {
+        emojiGrid += "⬛⬛⬛⬛⬛\n";
+      }
+      
+      const text = `Wordle+ (${currentTheme})\n${emojiGrid}\n#WordlePlus`;
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("📋 Hasil disalin! Tempel di WhatsApp/IG story 😊");
+        });
+      } else {
+        prompt("Salin teks berikut:", text);
+      }
+    }
+
+    // 🖱️ Event tema
+    themeBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        newGame(btn.dataset.theme);
+      });
+    });
+
+    // 🖥️ Init
+    window.onload = () => {
+      newGame();
+      // Auto-focus agar keyboard muncul di HP
+      document.body.addEventListener("click", () => {}, { once: true });
+    };
+
+    // Responsif canvas
+    window.addEventListener("resize", () => {
+      const canvas = document.getElementById('confetti-canvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>

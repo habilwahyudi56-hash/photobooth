@@ -54,7 +54,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 20px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -67,11 +67,11 @@
 
     header {
       text-align: center;
-      margin: 20px 0 30px;
+      margin: 20px 0 25px;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.4rem;
       font-weight: 700;
       color: var(--title);
       margin-bottom: 8px;
@@ -86,55 +86,45 @@
       opacity: 0.8;
     }
 
-    /* Theme selector */
     .theme-select {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       margin: 20px 0;
       flex-wrap: wrap;
     }
 
     .theme-btn {
-      padding: 8px 16px;
+      padding: 7px 14px;
       border: none;
       border-radius: 20px;
       background: var(--tile);
       color: var(--text);
       font-weight: 500;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 2px 6px var(--shadow);
+      box-shadow: 0 2px 5px var(--shadow);
     }
 
-    .theme-btn:hover {
-      background: #3a3a3c;
-    }
+    .theme-btn:hover { background: #3a3a3c; }
+    .theme-btn.active { background: var(--correct); color: white; }
 
-    .theme-btn.active {
-      background: var(--correct);
-      color: white;
-    }
-
-    /* Grid */
     .grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
       gap: 6px;
       margin: 0 auto 20px;
-      max-width: 400px;
+      max-width: 420px;
     }
 
-    .row {
-      display: contents;
-    }
+    .row { display: contents; }
 
     .tile {
       aspect-ratio: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 600;
       text-transform: uppercase;
       background: var(--tile);
@@ -142,38 +132,25 @@
       border-radius: 6px;
       color: var(--tile-text);
       transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
     }
 
-    /* 🔥 ANIMASI AMAN — TIDAK MEMBALIK TEKS */
     .tile.reveal {
       animation: popIn 0.4s ease forwards;
     }
 
     @keyframes popIn {
-      0% { 
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      50% { 
-        transform: scale(1.1);
-        opacity: 0.8;
-      }
-      100% { 
-        transform: scale(1);
-        opacity: 1;
-      }
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .tile.correct { background: var(--correct); border-color: var(--correct); }
     .tile.present { background: var(--present); border-color: var(--present); }
-    .tile.absent  { background: var(--absent); border-color: var(--absent); }
+    .tile.absent { background: var(--absent); border-color: var(--absent); }
 
-    /* Keyboard */
     .keyboard {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       margin: 0 auto;
     }
 
@@ -185,7 +162,7 @@
 
     .key {
       flex: 1;
-      min-height: 56px;
+      min-height: 52px;
       margin: 0 2px;
       display: flex;
       align-items: center;
@@ -194,36 +171,20 @@
       color: var(--tile-text);
       border-radius: 4px;
       font-weight: 500;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       user-select: none;
       transition: all 0.2s;
     }
 
-    .key:hover {
-      background: var(--key-hover);
-    }
-
-    .key.wide {
-      flex: 1.5;
-    }
-
-    .key.enter {
-      background: var(--present);
-      flex: 1.8;
-    }
-
-    .key.backspace {
-      background: var(--key-bg);
-      flex: 1.2;
-      font-size: 0.8rem;
-    }
-
+    .key:hover { background: var(--key-hover); }
+    .key.wide { flex: 1.5; }
+    .key.enter { background: var(--present); flex: 1.6; }
+    .key.backspace { background: var(--key-bg); flex: 1.2; font-size: 0.8rem; }
     .key.correct { background: var(--key-correct) !important; }
     .key.present { background: var(--key-present) !important; }
-    .key.absent  { background: var(--key-absent) !important; }
+    .key.absent { background: var(--key-absent) !important; }
 
-    /* Result & Toast */
     #result {
       min-height: 2rem;
       margin: 20px 0;
@@ -235,7 +196,7 @@
     .lose { color: var(--absent); }
 
     #share-btn {
-      padding: 12px 24px;
+      padding: 10px 20px;
       background: var(--present);
       color: white;
       border: none;
@@ -246,7 +207,6 @@
       display: none;
     }
 
-    /* Confetti */
     #confetti-canvas {
       position: fixed;
       top: 0;
@@ -257,26 +217,25 @@
       z-index: 100;
     }
 
-    /* Responsive */
-    @media (max-width: 500px) {
+    @media (max-width: 480px) {
       h1 { font-size: 2rem; }
-      .tile { font-size: 1.5rem; }
-      .key { min-height: 50px; font-size: 0.9rem; }
+      .tile { font-size: 1.4rem; }
+      .key { min-height: 48px; font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Wordle+</h1>
+      <h1>Wordle+ ✅</h1>
       <p class="subtitle">Tebak kata dalam 6 percobaan!</p>
     </header>
 
     <div class="theme-select">
-      <button class="theme-btn active" data-theme="buah">🍉 Buah</button>
-      <button class="theme-btn" data-theme="hewan">🐶 Hewan</button>
-      <button class="theme-btn" data-theme="negara">🌍 Negara</button>
-      <button class="theme-btn" data-theme="film">🎬 Film</button>
+      <button class="theme-btn active" data-theme="buah">🍉 Buah (5)</button>
+      <button class="theme-btn" data-theme="hewan">🐶 Hewan (5–6)</button>
+      <button class="theme-btn" data-theme="negara">🌍 Negara (5–7)</button>
+      <button class="theme-btn" data-theme="film">🎬 Film (5–6)</button>
     </div>
 
     <div class="grid" id="grid"></div>
@@ -325,35 +284,36 @@
   <canvas id="confetti-canvas"></canvas>
 
   <script>
-    // 📚 Kamus kata (5 huruf pertama diambil saat evaluasi)
+    // ✅ KATA HARUS SESUAI PANJANG — SEMUA 5–7 HURUF, TIDAK DIPOTONG
     const WORDS = {
-      buah: ["apel", "jeruk", "mangga", "pisang", "semangka", "nanas", "anggur", "melon", "jambu", "pepaya"],
-      hewan: ["kucing", "anjing", "harimau", "gajah", "singa", "burung", "ular", "monyet", "kelinci", "ikan"],
-      negara: ["indonesia", "malaysia", "singapura", "thailand", "vietnam", "filipina", "jepang", "korea", "china", "india"],
-      film: ["avatar", "titanic", "inception", "matrix", "avengers", "joker", "frozen", "toy", "harry", "spider"]
+      buah: ["apel", "jeruk", "nanas", "mangga", "semangka", "anggur", "melon", "jambu", "pepaya"],
+      hewan: ["kucing", "anjing", "harimau", "gajah", "singa", "burung", "ular", "monyet", "ikan"],
+      negara: ["india", "jepang", "korea", "china", "vietnam", "thailand", "filipina", "malaysia"],
+      film: ["avatar", "titanic", "inception", "matrix", "avengers", "joker", "frozen", "harry"]
     };
 
-    // 🔧 State
     let currentTheme = "buah";
     let targetWord = "";
+    let wordLength = 5; // default
     let currentRow = 0;
     let currentCol = 0;
     let gameOver = false;
     let attempts = [];
 
-    // DOM
     const grid = document.getElementById("grid");
     const resultEl = document.getElementById("result");
     const shareBtn = document.getElementById("share-btn");
     const themeBtns = document.querySelectorAll(".theme-btn");
 
-    // 🎨 Inisialisasi grid
+    // 🔧 Buat grid dinamis
     function initGrid() {
       grid.innerHTML = "";
+      grid.style.gridTemplateColumns = `repeat(${wordLength}, 1fr)`;
+      
       for (let i = 0; i < 6; i++) {
         const row = document.createElement("div");
         row.className = "row";
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < wordLength; j++) {
           const tile = document.createElement("div");
           tile.className = "tile";
           tile.dataset.row = i;
@@ -364,10 +324,13 @@
       }
     }
 
-    // 🌟 Mulai game baru
+    // 🌟 Mulai game — panjang sesuai target
     function newGame(theme = currentTheme) {
       currentTheme = theme;
-      targetWord = WORDS[theme][Math.floor(Math.random() * WORDS[theme].length)].toLowerCase();
+      const list = WORDS[theme];
+      targetWord = list[Math.floor(Math.random() * list.length)].toLowerCase();
+      wordLength = targetWord.length;
+      
       currentRow = 0;
       currentCol = 0;
       gameOver = false;
@@ -388,18 +351,16 @@
       });
     }
 
-    // 🖱️ Event keyboard
+    // 🔤 Input
     document.addEventListener("keydown", (e) => {
       if (gameOver) return;
       const key = e.key.toUpperCase();
       
-      if (/^[A-Z]$/.test(key)) {
-        if (currentCol < 5) {
-          const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
-          tile.textContent = key;
-          tile.classList.add("reveal");
-          currentCol++;
-        }
+      if (/^[A-Z]$/.test(key) && currentCol < wordLength) {
+        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
+        tile.textContent = key;
+        tile.classList.add("reveal");
+        currentCol++;
       } else if (e.key === "Enter") {
         submitGuess();
       } else if (e.key === "Backspace") {
@@ -407,7 +368,6 @@
       }
     });
 
-    // 🖱️ Klik keyboard visual
     document.querySelectorAll(".key").forEach(key => {
       key.addEventListener("click", () => {
         if (gameOver) return;
@@ -416,18 +376,15 @@
           submitGuess();
         } else if (val === "BACKSPACE") {
           deleteLetter();
-        } else if (/^[A-Z]$/.test(val)) {
-          if (currentCol < 5) {
-            const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
-            tile.textContent = val;
-            tile.classList.add("reveal");
-            currentCol++;
-          }
+        } else if (/^[A-Z]$/.test(val) && currentCol < wordLength) {
+          const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
+          tile.textContent = val;
+          tile.classList.add("reveal");
+          currentCol++;
         }
       });
     });
 
-    // ❌ Hapus huruf
     function deleteLetter() {
       if (currentCol > 0) {
         currentCol--;
@@ -437,26 +394,24 @@
       }
     }
 
-    // ✅ Submit tebakan
+    // ✅ Submit — panjang SAMA antara tebakan & target
     function submitGuess() {
-      if (currentCol !== 5) {
+      if (currentCol !== wordLength) {
         shakeGrid();
         return;
       }
 
-      // Ambil tebakan
       let guess = "";
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < wordLength; i++) {
         const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
         guess += tile.textContent.toLowerCase();
       }
 
-      // Evaluasi
       const result = evaluateGuess(guess);
       attempts.push({ guess, result });
 
-      // Update warna tile & keyboard
-      for (let i = 0; i < 5; i++) {
+      // Update UI
+      for (let i = 0; i < wordLength; i++) {
         const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
         tile.classList.add(result[i]);
         
@@ -472,8 +427,8 @@
         }
       }
 
-      // Cek kemenangan
-      if (guess === targetWord.substring(0,5)) {
+      // Menang?
+      if (guess === targetWord) {
         setTimeout(() => {
           resultEl.innerHTML = `<span class="win">🎉 SELAMAT! Jawaban: <strong>${targetWord}</strong></span>`;
           gameOver = true;
@@ -483,7 +438,7 @@
         return;
       }
 
-      // Cek kekalahan
+      // Kalah?
       if (currentRow === 5) {
         setTimeout(() => {
           resultEl.innerHTML = `<span class="lose">❌ Jawaban: <strong>${targetWord}</strong></span>`;
@@ -493,26 +448,25 @@
         return;
       }
 
-      // Lanjut ke baris berikutnya
       currentRow++;
       currentCol = 0;
     }
 
-    // 🔍 Evaluasi tebakan — ✅ LOGIKA BENAR (Wordle asli)
+    // 🔍 Evaluasi — WORKS FOR ANY LENGTH
     function evaluateGuess(guess) {
-      const result = Array(5).fill("absent");
-      let target = targetWord.substring(0,5); // ambil 5 huruf pertama
+      const result = Array(wordLength).fill("absent");
+      let target = targetWord;
 
-      // Step 1: tandai correct (benar & posisi benar)
-      for (let i = 0; i < 5; i++) {
+      // Step 1: correct
+      for (let i = 0; i < wordLength; i++) {
         if (guess[i] === target[i]) {
           result[i] = "correct";
-          target = target.substring(0, i) + '*' + target.substring(i + 1); // tandai dipakai
+          target = target.substring(0, i) + '*' + target.substring(i + 1);
         }
       }
 
-      // Step 2: tandai present (ada di target, tapi posisi salah)
-      for (let i = 0; i < 5; i++) {
+      // Step 2: present
+      for (let i = 0; i < wordLength; i++) {
         if (result[i] !== "correct") {
           const letter = guess[i];
           const idx = target.indexOf(letter);
@@ -526,7 +480,6 @@
       return result;
     }
 
-    // 🌀 Animasi error
     function shakeGrid() {
       grid.style.animation = "shake 0.5s";
       setTimeout(() => grid.style.animation = "", 500);
@@ -561,18 +514,15 @@
           return;
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         confetti.forEach(c => {
           c.y += c.speed;
           c.x += Math.sin(c.angle) * 0.5;
           c.angle += 0.05;
-          
           ctx.beginPath();
           ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
           ctx.fillStyle = c.color;
           ctx.fill();
         });
-        
         frames++;
         requestAnimationFrame(animate);
       };
@@ -581,7 +531,7 @@
       animate();
     }
 
-    // 📤 Bagikan hasil
+    // 📤 Bagikan — sesuai panjang
     function shareResult() {
       let emojiGrid = "";
       const maxRows = Math.min(attempts.length, 6);
@@ -593,46 +543,32 @@
       }
       
       for (let i = maxRows; i < 6; i++) {
-        emojiGrid += "⬛⬛⬛⬛⬛\n";
+        emojiGrid += "⬛".repeat(wordLength) + "\n";
       }
       
       const text = `Wordle+ (${currentTheme})\n${emojiGrid}\n#WordlePlus`;
       
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
-          alert("📋 Hasil disalin! Tempel di WhatsApp/IG story 😊");
-        }).catch(() => fallbackCopy(text));
+          alert("📋 Hasil disalin! Silakan share 😊");
+        }).catch(() => prompt("Salin teks:", text));
       } else {
-        fallbackCopy(text);
+        prompt("Salin teks:", text);
       }
     }
 
-    function fallbackCopy(text) {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
-      alert("📋 Hasil disalin! Silakan tempel di medsos.");
-    }
-
-    // 🖱️ Event tema
+    // 🖱️ Theme
     themeBtns.forEach(btn => {
       btn.addEventListener("click", () => {
         newGame(btn.dataset.theme);
       });
     });
 
-    // 🖥️ Init
+    // 🚀 Start
     window.onload = () => {
       newGame();
-      // Hard reset CSS transform (antisipasi cache lama)
-      const tiles = document.querySelectorAll('.tile');
-      tiles.forEach(t => t.style.transform = 'scale(1)');
     };
 
-    // Responsif canvas
     window.addEventListener("resize", () => {
       const canvas = document.getElementById('confetti-canvas');
       canvas.width = window.innerWidth;

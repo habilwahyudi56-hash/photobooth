@@ -1,579 +1,133 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wordle+ ✨</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Control Panel</title>
+
   <style>
-    :root {
-      --bg: #121213;
-      --surface: #1a1a1b;
-      --tile: #252526;
-      --tile-border: #3a3a3c;
-      --tile-text: #ffffff;
-      --correct: #538d4e;
-      --present: #b59f3b;
-      --absent: #3a3a3c;
-      --key-bg: #818384;
-      --key-hover: #a4a6a7;
-      --key-correct: var(--correct);
-      --key-present: var(--present);
-      --key-absent: #565758;
-      --text: #e0e0e0;
-      --title: #ffffff;
-      --shadow: rgba(0, 0, 0, 0.4);
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #ffffff;
-        --surface: #f3f4f6;
-        --tile: #ffffff;
-        --tile-border: #d1d5db;
-        --tile-text: #111827;
-        --key-bg: #d4d6da;
-        --key-hover: #bdc0c4;
-        --key-absent: #8e8fa0;
-        --text: #374151;
-        --title: #1f2937;
-        --shadow: rgba(0, 0, 0, 0.1);
-      }
-    }
-
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     body {
-      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      margin: 0;
       min-height: 100vh;
-      padding: 15px;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
     }
 
     .container {
-      max-width: 500px;
-      width: 100%;
-    }
-
-    header {
-      text-align: center;
-      margin: 20px 0 25px;
+      width: 95%;
+      max-width: 420px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
 
     h1 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: var(--title);
-      margin-bottom: 8px;
-      background: linear-gradient(90deg, #6a0dad, #8e2de2);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-
-    .theme-select {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-
-    .theme-btn {
-      padding: 7px 14px;
-      border: none;
-      border-radius: 20px;
-      background: var(--tile);
-      color: var(--text);
-      font-weight: 500;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 5px var(--shadow);
-    }
-
-    .theme-btn:hover { background: #3a3a3c; }
-    .theme-btn.active { background: var(--correct); color: white; }
-
-    .grid {
-      display: grid;
-      gap: 6px;
-      margin: 0 auto 20px;
-      max-width: 420px;
-    }
-
-    .row { display: contents; }
-
-    .tile {
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      background: var(--tile);
-      border: 2px solid var(--tile-border);
-      border-radius: 6px;
-      color: var(--tile-text);
-      transition: all 0.2s ease;
-    }
-
-    .tile.reveal {
-      animation: popIn 0.4s ease forwards;
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      50% { transform: scale(1.1); opacity: 0.8; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .tile.correct { background: var(--correct); border-color: var(--correct); }
-    .tile.present { background: var(--present); border-color: var(--present); }
-    .tile.absent { background: var(--absent); border-color: var(--absent); }
-
-    .keyboard {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    .keyboard-row {
-      display: flex;
-      justify-content: center;
-      margin: 4px 0;
-    }
-
-    .key {
-      flex: 1;
-      min-height: 52px;
-      margin: 0 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--key-bg);
-      color: var(--tile-text);
-      border-radius: 4px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.2s;
-    }
-
-    .key:hover { background: var(--key-hover); }
-    .key.wide { flex: 1.5; }
-    .key.enter { background: var(--present); flex: 1.6; }
-    .key.backspace { background: var(--key-bg); flex: 1.2; font-size: 0.8rem; }
-    .key.correct { background: var(--key-correct) !important; }
-    .key.present { background: var(--key-present) !important; }
-    .key.absent { background: var(--key-absent) !important; }
-
-    #result {
-      min-height: 2rem;
-      margin: 20px 0;
-      font-weight: 600;
       text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
     }
 
-    .win { color: var(--correct); }
-    .lose { color: var(--absent); }
-
-    #share-btn {
-      padding: 10px 20px;
-      background: var(--present);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      display: none;
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
     }
 
-    #confetti-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    /* BUTTON */
+    .btn {
       width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 100;
+      padding: 12px;
+      margin-top: 8px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #00c6ff;
+      color: #000;
+      font-weight: bold;
     }
 
-    @media (max-width: 480px) {
-      h1 { font-size: 2rem; }
-      .tile { font-size: 1.4rem; }
-      .key { min-height: 48px; font-size: 0.9rem; }
+    .btn.off {
+      background: #ff4d4d;
+      color: #fff;
+    }
+
+    /* INPUT */
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    /* STATUS */
+    .status {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.6;
+      margin-top: 10px;
     }
   </style>
 </head>
+
 <body>
+
   <div class="container">
-    <header>
-      <h1>Wordle+ ✅</h1>
-      <p class="subtitle">Tebak kata dalam 6 percobaan!</p>
-    </header>
+    <h1>IoT Web Server</h1>
 
-    <div class="theme-select">
-      <button class="theme-btn active" data-theme="buah">🍉 Buah (5)</button>
-      <button class="theme-btn" data-theme="hewan">🐶 Hewan (5–6)</button>
-      <button class="theme-btn" data-theme="negara">🌍 Negara (5–7)</button>
-      <button class="theme-btn" data-theme="film">🎬 Film (5–6)</button>
+    <!-- RELAY -->
+    <div class="card">
+      <h2>Kontrol Relay</h2>
+      <button class="btn" onclick="location.href='/relay/on'">ON</button>
+      <button class="btn off" onclick="location.href='/relay/off'">OFF</button>
     </div>
 
-    <div class="grid" id="grid"></div>
-
-    <div id="result"></div>
-    <button id="share-btn" onclick="shareResult()">📤 Bagikan Hasil</button>
-
-    <div class="keyboard" id="keyboard">
-      <div class="keyboard-row">
-        <div class="key" data-key="Q">Q</div>
-        <div class="key" data-key="W">W</div>
-        <div class="key" data-key="E">E</div>
-        <div class="key" data-key="R">R</div>
-        <div class="key" data-key="T">T</div>
-        <div class="key" data-key="Y">Y</div>
-        <div class="key" data-key="U">U</div>
-        <div class="key" data-key="I">I</div>
-        <div class="key" data-key="O">O</div>
-        <div class="key" data-key="P">P</div>
-      </div>
-      <div class="keyboard-row">
-        <div class="key" data-key="A">A</div>
-        <div class="key" data-key="S">S</div>
-        <div class="key" data-key="D">D</div>
-        <div class="key" data-key="F">F</div>
-        <div class="key" data-key="G">G</div>
-        <div class="key" data-key="H">H</div>
-        <div class="key" data-key="J">J</div>
-        <div class="key" data-key="K">K</div>
-        <div class="key" data-key="L">L</div>
-      </div>
-      <div class="keyboard-row">
-        <div class="key enter" data-key="ENTER">⏎ Enter</div>
-        <div class="key" data-key="Z">Z</div>
-        <div class="key" data-key="X">X</div>
-        <div class="key" data-key="C">C</div>
-        <div class="key" data-key="V">V</div>
-        <div class="key" data-key="B">B</div>
-        <div class="key" data-key="N">N</div>
-        <div class="key" data-key="M">M</div>
-        <div class="key backspace" data-key="BACKSPACE">⌫</div>
-      </div>
+    <!-- JADWAL -->
+    <div class="card">
+      <h2>Set Jadwal</h2>
+      <input type="time">
+      <button class="btn">Simpan Jadwal</button>
     </div>
+
+    <!-- TEKS -->
+    <div class="card">
+      <h2>Ubah Teks</h2>
+      <input type="text" placeholder="Masukkan teks...">
+      <button class="btn">Kirim</button>
+    </div>
+
+    <!-- STATUS -->
+    <div class="card status">
+      Status Perangkat: <b>ONLINE</b>
+    </div>
+
+    <footer>
+      ESP Web Server © 2025
+    </footer>
   </div>
 
-  <canvas id="confetti-canvas"></canvas>
-
-  <script>
-    // ✅ KATA HARUS SESUAI PANJANG — SEMUA 5–7 HURUF, TIDAK DIPOTONG
-    const WORDS = {
-      buah: ["apel", "jeruk", "nanas", "mangga", "semangka", "anggur", "melon", "jambu", "pepaya"],
-      hewan: ["kucing", "anjing", "harimau", "gajah", "singa", "burung", "ular", "monyet", "ikan"],
-      negara: ["india", "jepang", "korea", "china", "vietnam", "thailand", "filipina", "malaysia"],
-      film: ["avatar", "titanic", "inception", "matrix", "avengers", "joker", "frozen", "harry"]
-    };
-
-    let currentTheme = "buah";
-    let targetWord = "";
-    let wordLength = 5; // default
-    let currentRow = 0;
-    let currentCol = 0;
-    let gameOver = false;
-    let attempts = [];
-
-    const grid = document.getElementById("grid");
-    const resultEl = document.getElementById("result");
-    const shareBtn = document.getElementById("share-btn");
-    const themeBtns = document.querySelectorAll(".theme-btn");
-
-    // 🔧 Buat grid dinamis
-    function initGrid() {
-      grid.innerHTML = "";
-      grid.style.gridTemplateColumns = `repeat(${wordLength}, 1fr)`;
-      
-      for (let i = 0; i < 6; i++) {
-        const row = document.createElement("div");
-        row.className = "row";
-        for (let j = 0; j < wordLength; j++) {
-          const tile = document.createElement("div");
-          tile.className = "tile";
-          tile.dataset.row = i;
-          tile.dataset.col = j;
-          row.appendChild(tile);
-        }
-        grid.appendChild(row);
-      }
-    }
-
-    // 🌟 Mulai game — panjang sesuai target
-    function newGame(theme = currentTheme) {
-      currentTheme = theme;
-      const list = WORDS[theme];
-      targetWord = list[Math.floor(Math.random() * list.length)].toLowerCase();
-      wordLength = targetWord.length;
-      
-      currentRow = 0;
-      currentCol = 0;
-      gameOver = false;
-      attempts = [];
-      resultEl.textContent = "";
-      shareBtn.style.display = "none";
-      initGrid();
-      
-      // Reset keyboard
-      document.querySelectorAll(".key").forEach(key => {
-        key.className = key.dataset.key === "ENTER" ? "key enter" :
-                       key.dataset.key === "BACKSPACE" ? "key backspace" :
-                       "key";
-      });
-
-      themeBtns.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.theme === theme);
-      });
-    }
-
-    // 🔤 Input
-    document.addEventListener("keydown", (e) => {
-      if (gameOver) return;
-      const key = e.key.toUpperCase();
-      
-      if (/^[A-Z]$/.test(key) && currentCol < wordLength) {
-        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
-        tile.textContent = key;
-        tile.classList.add("reveal");
-        currentCol++;
-      } else if (e.key === "Enter") {
-        submitGuess();
-      } else if (e.key === "Backspace") {
-        deleteLetter();
-      }
-    });
-
-    document.querySelectorAll(".key").forEach(key => {
-      key.addEventListener("click", () => {
-        if (gameOver) return;
-        const val = key.dataset.key;
-        if (val === "ENTER") {
-          submitGuess();
-        } else if (val === "BACKSPACE") {
-          deleteLetter();
-        } else if (/^[A-Z]$/.test(val) && currentCol < wordLength) {
-          const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
-          tile.textContent = val;
-          tile.classList.add("reveal");
-          currentCol++;
-        }
-      });
-    });
-
-    function deleteLetter() {
-      if (currentCol > 0) {
-        currentCol--;
-        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${currentCol}"]`);
-        tile.textContent = "";
-        tile.classList.remove("reveal");
-      }
-    }
-
-    // ✅ Submit — panjang SAMA antara tebakan & target
-    function submitGuess() {
-      if (currentCol !== wordLength) {
-        shakeGrid();
-        return;
-      }
-
-      let guess = "";
-      for (let i = 0; i < wordLength; i++) {
-        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
-        guess += tile.textContent.toLowerCase();
-      }
-
-      const result = evaluateGuess(guess);
-      attempts.push({ guess, result });
-
-      // Update UI
-      for (let i = 0; i < wordLength; i++) {
-        const tile = document.querySelector(`.tile[data-row="${currentRow}"][data-col="${i}"]`);
-        tile.classList.add(result[i]);
-        
-        const keyEl = document.querySelector(`.key[data-key="${guess[i].toUpperCase()}"]`);
-        if (result[i] === "correct") {
-          keyEl.className = "key correct";
-        } else if (result[i] === "present" && !keyEl.classList.contains("correct")) {
-          keyEl.className = "key present";
-        } else if (result[i] === "absent" && 
-                  !keyEl.classList.contains("correct") && 
-                  !keyEl.classList.contains("present")) {
-          keyEl.className = "key absent";
-        }
-      }
-
-      // Menang?
-      if (guess === targetWord) {
-        setTimeout(() => {
-          resultEl.innerHTML = `<span class="win">🎉 SELAMAT! Jawaban: <strong>${targetWord}</strong></span>`;
-          gameOver = true;
-          shareBtn.style.display = "inline-block";
-          setTimeout(createConfetti, 300);
-        }, 600);
-        return;
-      }
-
-      // Kalah?
-      if (currentRow === 5) {
-        setTimeout(() => {
-          resultEl.innerHTML = `<span class="lose">❌ Jawaban: <strong>${targetWord}</strong></span>`;
-          gameOver = true;
-          shareBtn.style.display = "inline-block";
-        }, 600);
-        return;
-      }
-
-      currentRow++;
-      currentCol = 0;
-    }
-
-    // 🔍 Evaluasi — WORKS FOR ANY LENGTH
-    function evaluateGuess(guess) {
-      const result = Array(wordLength).fill("absent");
-      let target = targetWord;
-
-      // Step 1: correct
-      for (let i = 0; i < wordLength; i++) {
-        if (guess[i] === target[i]) {
-          result[i] = "correct";
-          target = target.substring(0, i) + '*' + target.substring(i + 1);
-        }
-      }
-
-      // Step 2: present
-      for (let i = 0; i < wordLength; i++) {
-        if (result[i] !== "correct") {
-          const letter = guess[i];
-          const idx = target.indexOf(letter);
-          if (idx !== -1) {
-            result[i] = "present";
-            target = target.substring(0, idx) + '*' + target.substring(idx + 1);
-          }
-        }
-      }
-
-      return result;
-    }
-
-    function shakeGrid() {
-      grid.style.animation = "shake 0.5s";
-      setTimeout(() => grid.style.animation = "", 500);
-    }
-
-    // 🎉 Confetti
-    function createConfetti() {
-      const canvas = document.getElementById('confetti-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const confettiCount = 150;
-      const confetti = [];
-      const colors = ["#ff416c", "#00b09b", "#fed330", "#8e2de2", "#00c853"];
-
-      for (let i = 0; i < confettiCount; i++) {
-        confetti.push({
-          x: Math.random() * canvas.width,
-          y: -10,
-          size: Math.random() * 4 + 2,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          speed: Math.random() * 3 + 2,
-          angle: Math.random() * Math.PI * 2
-        });
-      }
-
-      let frames = 0;
-      const animate = () => {
-        if (frames > 60) {
-          canvas.style.display = 'none';
-          return;
-        }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        confetti.forEach(c => {
-          c.y += c.speed;
-          c.x += Math.sin(c.angle) * 0.5;
-          c.angle += 0.05;
-          ctx.beginPath();
-          ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
-          ctx.fillStyle = c.color;
-          ctx.fill();
-        });
-        frames++;
-        requestAnimationFrame(animate);
-      };
-
-      canvas.style.display = 'block';
-      animate();
-    }
-
-    // 📤 Bagikan — sesuai panjang
-    function shareResult() {
-      let emojiGrid = "";
-      const maxRows = Math.min(attempts.length, 6);
-      
-      for (let i = 0; i < maxRows; i++) {
-        emojiGrid += attempts[i].result.map(r => 
-          r === "correct" ? "🟩" : r === "present" ? "🟨" : "⬛"
-        ).join("") + "\n";
-      }
-      
-      for (let i = maxRows; i < 6; i++) {
-        emojiGrid += "⬛".repeat(wordLength) + "\n";
-      }
-      
-      const text = `Wordle+ (${currentTheme})\n${emojiGrid}\n#WordlePlus`;
-      
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-          alert("📋 Hasil disalin! Silakan share 😊");
-        }).catch(() => prompt("Salin teks:", text));
-      } else {
-        prompt("Salin teks:", text);
-      }
-    }
-
-    // 🖱️ Theme
-    themeBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        newGame(btn.dataset.theme);
-      });
-    });
-
-    // 🚀 Start
-    window.onload = () => {
-      newGame();
-    };
-
-    window.addEventListener("resize", () => {
-      const canvas = document.getElementById('confetti-canvas');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
 </body>
 </html>

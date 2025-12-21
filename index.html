@@ -6,15 +6,9 @@
 
 <title>Smart Room Control | HABIL_QW</title>
 
-<!-- FAVICON DESKTOP -->
-<link rel="icon" type="image/png" sizes="32x32" href="HOREG LOGO.png">
-<link rel="icon" type="image/png" sizes="16x16" href="HOREG LOGO.png">
-
-<!-- ICON MOBILE / ANDROID / iOS -->
-<link rel="apple-touch-icon" sizes="180x180" href="HOREG LOGO.png">
-<link rel="icon" type="image/png" sizes="192x192" href="HOREG LOGO.png">
-<link rel="icon" type="image/png" sizes="512x512" href="HOREG LOGO.png">
-
+<!-- ICON -->
+<link rel="icon" href="HOREG LOGO.png">
+<link rel="apple-touch-icon" href="HOREG LOGO.png">
 <meta name="theme-color" content="#0b1020">
 
 <style>
@@ -22,11 +16,9 @@
   --bg-dark:#0b1020;
   --bg-mid:#121a33;
   --card:rgba(255,255,255,.06);
-
   --green:#21ff8b;
   --red:#ff4d4d;
   --blue:#4cc9f0;
-
   --txt:#ffffff;
   --muted:#a0a8c8;
 }
@@ -80,35 +72,19 @@ body {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  object-fit: cover;
   box-shadow: 0 0 18px rgba(76,201,240,.5);
   animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%,100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
 }
 
-.brand h1 {
-  margin: 0;
-  font-size: 20px;
-  letter-spacing: 1px;
-}
-
-.brand span {
-  font-size: 12px;
-  color: var(--muted);
-}
+.brand h1 { margin: 0; font-size: 20px; }
+.brand span { font-size: 12px; color: var(--muted); }
 
 /* STATUS */
-.status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-}
-
+.status { display: flex; align-items: center; gap: 8px; }
 .dot {
   width: 10px;
   height: 10px;
@@ -117,11 +93,8 @@ body {
   box-shadow: 0 0 10px var(--green);
   animation: pulse 2s infinite;
 }
-
 @keyframes pulse {
-  0% { box-shadow: 0 0 6px var(--green); }
-  50% { box-shadow: 0 0 16px var(--green); }
-  100% { box-shadow: 0 0 6px var(--green); }
+  50% { box-shadow: 0 0 18px var(--green); }
 }
 
 /* GRID */
@@ -142,7 +115,18 @@ body {
 .card h2 {
   font-size: 13px;
   color: var(--muted);
-  margin: 0 0 14px;
+  margin-bottom: 14px;
+}
+
+/* INPUT */
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(0,0,0,.45);
+  color: var(--txt);
+  margin-bottom: 10px;
 }
 
 /* BUTTON */
@@ -159,25 +143,12 @@ button {
 .btn-on {
   background: linear-gradient(135deg,#1cff7a,#0bbf5e);
 }
-
 .btn-off {
   background: linear-gradient(135deg,#ff4d4d,#c9184a);
   color: #fff;
 }
-
 .btn-action {
   background: linear-gradient(135deg,#4cc9f0,#4895ef);
-}
-
-/* FORM */
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: none;
-  background: rgba(0,0,0,.45);
-  color: var(--txt);
-  margin-bottom: 12px;
 }
 
 /* FOOTER */
@@ -194,9 +165,10 @@ input {
 
 <div class="app">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="brand">
-      <img src="HOREG LOGO.png" class="logo" alt="Logo">
+      <img src="HOREG LOGO.png" class="logo">
       <div>
         <h1>SMART ROOM CONTROL</h1>
         <span>by HABIL_QW</span>
@@ -208,23 +180,41 @@ input {
   </div>
 
   <div class="grid">
+
+    <!-- KONTROL -->
     <div class="card">
       <h2>KONTROL LAMPU</h2>
       <button class="btn-on">ON</button><br><br>
       <button class="btn-off">OFF</button>
     </div>
 
+    <!-- JADWAL -->
     <div class="card">
       <h2>SET JADWAL</h2>
-      <input type="time">
-      <button class="btn-action">SIMPAN</button>
+      <label>Waktu Nyala</label>
+      <input type="time" name="on_time">
+
+      <label>Waktu Mati</label>
+      <input type="time" name="off_time">
+
+      <button class="btn-action">SIMPAN JADWAL</button>
     </div>
 
+    <!-- DISPLAY -->
     <div class="card">
       <h2>DISPLAY TEXT</h2>
-      <input type="text" placeholder="Masukkan teks...">
+      <input type="text" name="text" placeholder="Masukkan teks...">
+
+      <select name="animation">
+        <option value="scroll-right">➡️ Gulir Kanan</option>
+        <option value="scroll-left">⬅️ Gulir Kiri</option>
+        <option value="down">⬇️ Jatuh ke Bawah</option>
+        <option value="up">⬆️ Ke Atas</option>
+      </select>
+
       <button class="btn-action">SEND</button>
     </div>
+
   </div>
 
   <div class="footer">

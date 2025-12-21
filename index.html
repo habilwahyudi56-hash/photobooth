@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Smart Room Control | HABIL_QW</title>
 
 <link rel="icon" href="HOREG LOGO.png">
@@ -16,22 +15,16 @@
   --bg2:#121a33;
   --card:rgba(255,255,255,.07);
   --line:rgba(255,255,255,.08);
-
   --green:#21ff8b;
   --red:#ff4d4d;
   --blue:#4cc9f0;
-
-  --text:#ffffff;
+  --text:#fff;
   --muted:#9aa4c7;
 }
 
-*{box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+*{box-sizing:border-box;font-family:'Segoe UI',system-ui}
 
-html,body{
-  margin:0;
-  max-width:100%;
-  overflow-x:hidden;
-}
+html,body{margin:0;overflow-x:hidden}
 
 body{
   min-height:100vh;
@@ -43,21 +36,14 @@ body{
   color:var(--text);
 }
 
-/* APP */
 .app{
   width:100%;
   max-width:1100px;
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.45));
-  border-radius:28px;
   padding:20px;
-  backdrop-filter:blur(20px);
-  box-shadow:0 35px 90px rgba(0,0,0,.85);
-  animation:appIn .9s ease;
-}
-
-@keyframes appIn{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
+  border-radius:28px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.45));
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 80px rgba(0,0,0,.8);
 }
 
 /* HEADER */
@@ -65,59 +51,24 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:16px;
+  gap:14px;
   flex-wrap:wrap;
   margin-bottom:22px;
 }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
+.brand{display:flex;gap:14px;align-items:center}
 .logo{
-  width:56px;
-  height:56px;
-  border-radius:16px;
-  box-shadow:0 0 22px rgba(76,201,240,.5);
-  animation:float 3s ease-in-out infinite;
+  width:56px;height:56px;border-radius:16px;
+  box-shadow:0 0 20px rgba(76,201,240,.5);
 }
 
-@keyframes float{
-  50%{transform:translateY(-6px)}
-}
+.brand h1{margin:0;font-size:21px}
+.brand span{font-size:12px;color:var(--muted)}
 
-.brand h1{
-  margin:0;
-  font-size:21px;
-  letter-spacing:1px;
-}
-
-.brand span{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* STATUS */
-.status{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-}
-
+.status{font-size:13px;display:flex;align-items:center;gap:8px}
 .dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 10px var(--green);
-  animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-  50%{box-shadow:0 0 18px var(--green)}
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 10px var(--green);
 }
 
 /* GRID */
@@ -133,87 +84,94 @@ body{
   border-radius:22px;
   padding:20px;
   border:1px solid var(--line);
-  transition:transform .3s ease,box-shadow .3s ease;
-}
-
-.card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 18px 40px rgba(0,0,0,.6);
 }
 
 .card h2{
-  margin:0 0 16px;
   font-size:13px;
+  color:var(--muted);
   letter-spacing:1px;
-  color:var(--muted);
+  margin-bottom:14px;
 }
 
-/* FORM */
-label{
-  font-size:12px;
-  color:var(--muted);
-  display:block;
-  margin-bottom:4px;
-}
-
+/* INPUT */
 input,select{
   width:100%;
   padding:13px;
   border-radius:14px;
   border:none;
   background:rgba(0,0,0,.45);
-  color:var(--text);
+  color:#fff;
   margin-bottom:12px;
-  outline:none;
 }
 
-input:focus,select:focus{
-  box-shadow:0 0 14px rgba(76,201,240,.45);
-}
-
-/* BUTTON */
 button{
   width:100%;
   padding:14px;
-  border-radius:16px;
   border:none;
-  font-size:15px;
+  border-radius:16px;
   font-weight:600;
   cursor:pointer;
-  transition:transform .25s ease,box-shadow .25s ease;
+  transition:.25s;
 }
 
 button:active{transform:scale(.96)}
 
 .btn-on{
   background:linear-gradient(135deg,#1cff7a,#0bbf5e);
-  box-shadow:0 0 16px rgba(34,255,136,.5);
 }
-
 .btn-off{
   background:linear-gradient(135deg,#ff4d4d,#c9184a);
   color:#fff;
-  box-shadow:0 0 16px rgba(255,77,77,.45);
 }
-
 .btn-action{
   background:linear-gradient(135deg,#4cc9f0,#4895ef);
-  box-shadow:0 0 14px rgba(76,201,240,.45);
+}
+
+/* MATRIX LIST */
+.list{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.45);
+  padding:10px 14px;
+  border-radius:14px;
+  animation:fade .3s ease;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1}
+}
+
+.item span{
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:70%;
+}
+
+.remove{
+  background:none;
+  border:none;
+  color:var(--red);
+  font-size:16px;
+  cursor:pointer;
 }
 
 /* FOOTER */
 .footer{
-  margin-top:20px;
-  text-align:center;
+  margin-top:18px;
   font-size:12px;
   color:var(--muted);
-  opacity:.85;
-}
-
-/* MOBILE */
-@media(max-width:600px){
-  .brand h1{font-size:19px}
-  .logo{width:50px;height:50px}
+  text-align:center;
 }
 </style>
 </head>
@@ -222,7 +180,6 @@ button:active{transform:scale(.96)}
 
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="brand">
       <img src="HOREG LOGO.png" class="logo">
@@ -231,15 +188,12 @@ button:active{transform:scale(.96)}
         <span>by HABIL_QW</span>
       </div>
     </div>
-    <div class="status">
-      <div class="dot"></div> ONLINE
-    </div>
+    <div class="status"><div class="dot"></div> ONLINE</div>
   </div>
 
-  <!-- GRID -->
   <div class="grid">
 
-    <!-- KONTROL -->
+    <!-- LAMPU -->
     <div class="card">
       <h2>KONTROL LAMPU</h2>
       <button class="btn-on">ON</button><br><br>
@@ -249,39 +203,54 @@ button:active{transform:scale(.96)}
     <!-- JADWAL -->
     <div class="card">
       <h2>SET JADWAL</h2>
-
-      <label>Waktu Nyala</label>
-      <input type="time" name="on_time">
-
-      <label>Waktu Mati</label>
-      <input type="time" name="off_time">
-
-      <button class="btn-action">SIMPAN JADWAL</button>
+      <input type="time">
+      <input type="time">
+      <button class="btn-action">SIMPAN</button>
     </div>
 
-    <!-- DISPLAY -->
+    <!-- MATRIX MULTI INPUT -->
     <div class="card">
-      <h2>DISPLAY TEXT</h2>
+      <h2>MATRIX TEXT MANAGER</h2>
 
-      <input type="text" name="text" placeholder="Masukkan teks...">
-
-      <select name="animation">
-        <option value="right">➡️ Gulir Kanan</option>
-        <option value="left">⬅️ Gulir Kiri</option>
-        <option value="down">⬇️ Jatuh ke Bawah</option>
+      <input id="textInput" type="text" placeholder="Tambah teks matrix">
+      <select id="anim">
+        <option value="left">⬅️ Scroll Kiri</option>
+        <option value="right">➡️ Scroll Kanan</option>
         <option value="up">⬆️ Ke Atas</option>
+        <option value="down">⬇️ Ke Bawah</option>
       </select>
 
-      <button class="btn-action">SEND</button>
+      <button class="btn-action" onclick="addText()">TAMBAH TEKS</button>
+
+      <div class="list" id="list"></div>
     </div>
 
   </div>
 
   <div class="footer">
-    © 2025 HABIL_QW • Smart Room Control System
+    © 2025 HABIL_QW • Smart Room Control
   </div>
 
 </div>
+
+<script>
+function addText(){
+  const input = document.getElementById('textInput');
+  if(input.value.trim()==="") return;
+
+  const list = document.getElementById('list');
+  const item = document.createElement('div');
+  item.className = 'item';
+
+  item.innerHTML = `
+    <span>${input.value}</span>
+    <button class="remove" onclick="this.parentElement.remove()">✖</button>
+  `;
+
+  list.appendChild(item);
+  input.value="";
+}
+</script>
 
 </body>
 </html>

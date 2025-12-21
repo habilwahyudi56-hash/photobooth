@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Room Control</title>
+
+<title>Smart Room Control | HABIL_QW</title>
+
+<!-- FAVICON / LOGO TAB -->
+<link rel="icon" type="image/png" href="/HOREG LOGO.PNG">
 
 <style>
 :root {
@@ -14,19 +18,26 @@
   --red:#ff4d4d;   --red-soft:rgba(255,77,77,.45);
   --blue:#4cc9f0;  --blue-soft:rgba(76,201,240,.35);
 
-  --text:#fff; --muted:#aab4d4;
+  --text:#ffffff; --muted:#aab4d4;
 }
 
-*{box-sizing:border-box;font-family:"Segoe UI",system-ui,sans-serif}
+*{
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif
+}
 
 body{
-  margin:0;min-height:100vh;
+  margin:0;
+  min-height:100vh;
   background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3));
   background-size:400% 400%;
   animation:bgFlow 18s ease infinite;
   color:var(--text);
-  display:flex;justify-content:center;align-items:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
+
 @keyframes bgFlow{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
@@ -35,25 +46,77 @@ body{
 
 /* APP */
 .app{
-  width:100%;max-width:430px;
-  padding:18px;border-radius:26px;
+  width:100%;
+  max-width:430px;
+  padding:18px;
+  border-radius:26px;
   background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.35));
   backdrop-filter:blur(18px);
   box-shadow:0 25px 60px rgba(0,0,0,.8);
   animation:appIn .9s cubic-bezier(.25,.8,.25,1);
 }
-@keyframes appIn{from{opacity:0;transform:translateY(18px)}to{opacity:1}}
+
+@keyframes appIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1}
+}
 
 /* HEADER */
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.header h1{font-size:20px;margin:0;letter-spacing:1px}
-.header span{font-size:11px;color:var(--muted)}
-.status{display:flex;align-items:center;gap:8px;font-size:12px}
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+}
+
+.title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  object-fit:cover;
+  box-shadow:0 0 16px var(--blue-soft);
+  animation:logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+  100%{transform:translateY(0)}
+}
+
+.header h1{
+  font-size:20px;
+  margin:0;
+  letter-spacing:1px;
+}
+
+.header span{
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* STATUS */
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+}
+
 .dot{
-  width:10px;height:10px;border-radius:50%;
+  width:10px;
+  height:10px;
+  border-radius:50%;
   background:var(--green);
   animation:dotBreath 2.2s ease-in-out infinite;
 }
+
 @keyframes dotBreath{
   0%{box-shadow:0 0 6px var(--green-soft)}
   50%{box-shadow:0 0 14px var(--green)}
@@ -63,78 +126,127 @@ body{
 /* CARD */
 .card{
   background:var(--card);
-  border-radius:20px;padding:16px;margin-bottom:16px;
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:16px;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
   animation:cardUp .8s cubic-bezier(.25,.8,.25,1);
 }
-@keyframes cardUp{from{opacity:0;transform:translateY(12px)}to{opacity:1}}
-.card h2{margin:0 0 12px;font-size:13px;letter-spacing:1px;color:var(--muted)}
 
-/* BUTTON BASE */
-.btn{
-  width:100%;padding:14px;border-radius:16px;border:none;
-  font-size:15px;font-weight:600;cursor:pointer;
-  transition:transform .25s cubic-bezier(.25,.8,.25,1),
-             box-shadow .3s ease,opacity .25s ease;
+@keyframes cardUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1}
 }
-.btn:hover{transform:translateY(-2px);opacity:.96}
 
-/* PRIMARY — RELAY */
+.card h2{
+  margin:0 0 12px;
+  font-size:13px;
+  letter-spacing:1px;
+  color:var(--muted);
+}
+
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:none;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform .25s cubic-bezier(.25,.8,.25,1),
+             box-shadow .3s ease,
+             opacity .25s ease;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  opacity:.96;
+}
+
+/* RELAY */
 .btn.on{
   background:linear-gradient(135deg,#1cff7a,#0bbf5e);
   color:#002b18;
   box-shadow:0 0 14px var(--green-soft);
   animation:greenPulse 3s ease-in-out infinite;
 }
+
 @keyframes greenPulse{
   0%,100%{box-shadow:0 0 10px var(--green-soft)}
   50%{box-shadow:0 0 22px var(--green)}
 }
+
 .btn.off{
   background:linear-gradient(135deg,#ff4d4d,#c9184a);
   color:#fff;
   box-shadow:0 0 14px var(--red-soft);
   animation:redPulse 3s ease-in-out infinite;
 }
+
 @keyframes redPulse{
   0%,100%{box-shadow:0 0 10px var(--red-soft)}
   50%{box-shadow:0 0 22px var(--red)}
 }
 
-/* SECONDARY — ACTION */
+/* ACTION */
 .btn.action{
   background:linear-gradient(135deg,#4cc9f0,#4895ef);
   color:#001b2e;
   box-shadow:0 0 10px var(--blue-soft);
 }
+
 .btn.action:hover{
   box-shadow:0 0 16px var(--blue);
 }
 
 /* INPUT */
 input{
-  width:100%;padding:12px;border-radius:14px;border:none;
-  background:rgba(0,0,0,.4);color:var(--text);
-  font-size:14px;outline:none;
+  width:100%;
+  padding:12px;
+  border-radius:14px;
+  border:none;
+  background:rgba(0,0,0,.4);
+  color:var(--text);
+  font-size:14px;
+  outline:none;
 }
-input:focus{box-shadow:0 0 14px var(--blue-soft)}
+
+input:focus{
+  box-shadow:0 0 14px var(--blue-soft);
+}
 
 .row{display:flex;gap:10px}
-.footer{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;opacity:.75}
+
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:10px;
+  opacity:.75;
+}
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
+  <!-- HEADER -->
   <div class="header">
-    <div>
-      <h1>SMART ROOM CONTROL</h1>
-      <span>by HABIL_QW</span>
+    <div class="title">
+      <img src="/HOREG LOGO.PNG" class="logo" alt="Logo">
+      <div>
+        <h1>SMART ROOM CONTROL</h1>
+        <span>by HABIL_QW</span>
+      </div>
     </div>
-    <div class="status"><div class="dot"></div>ONLINE</div>
+    <div class="status">
+      <div class="dot"></div>ONLINE
+    </div>
   </div>
 
+  <!-- RELAY -->
   <div class="card">
     <h2>RELAY CONTROL</h2>
     <div class="row">
@@ -143,20 +255,25 @@ input:focus{box-shadow:0 0 14px var(--blue-soft)}
     </div>
   </div>
 
+  <!-- TIMER -->
   <div class="card">
     <h2>TIMER</h2>
     <input type="time">
     <button class="btn action" style="margin-top:12px">SAVE</button>
   </div>
 
+  <!-- TEXT -->
   <div class="card">
     <h2>DISPLAY TEXT</h2>
     <input type="text" placeholder="Masukkan teks...">
     <button class="btn action" style="margin-top:12px">SEND</button>
   </div>
 
-  <div class="footer">© 2025 HABIL_QW • Smart Room System</div>
+  <div class="footer">
+    © 2025 HABIL_QW • Smart Room System
+  </div>
 
 </div>
+
 </body>
 </html>

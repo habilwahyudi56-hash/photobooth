@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Smart Room Control | HABIL_QW</title>
 
+<!-- ICON -->
 <link rel="icon" href="HOREG LOGO.png">
 <link rel="apple-touch-icon" href="HOREG LOGO.png">
 <meta name="theme-color" content="#0b1020">
@@ -18,13 +20,17 @@
   --green:#21ff8b;
   --red:#ff4d4d;
   --blue:#4cc9f0;
-  --text:#fff;
+  --text:#ffffff;
   --muted:#9aa4c7;
 }
 
 *{box-sizing:border-box;font-family:'Segoe UI',system-ui}
 
-html,body{margin:0;overflow-x:hidden}
+html,body{
+  margin:0;
+  max-width:100%;
+  overflow-x:hidden;
+}
 
 body{
   min-height:100vh;
@@ -36,6 +42,7 @@ body{
   color:var(--text);
 }
 
+/* APP */
 .app{
   width:100%;
   max-width:1100px;
@@ -56,19 +63,43 @@ body{
   margin-bottom:22px;
 }
 
-.brand{display:flex;gap:14px;align-items:center}
+.brand{
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+
 .logo{
-  width:56px;height:56px;border-radius:16px;
+  width:56px;
+  height:56px;
+  border-radius:16px;
+  object-fit:cover;
   box-shadow:0 0 20px rgba(76,201,240,.5);
 }
 
-.brand h1{margin:0;font-size:21px}
-.brand span{font-size:12px;color:var(--muted)}
+.brand h1{
+  margin:0;
+  font-size:21px;
+}
 
-.status{font-size:13px;display:flex;align-items:center;gap:8px}
+.brand span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+}
+
 .dot{
-  width:10px;height:10px;border-radius:50%;
-  background:var(--green);box-shadow:0 0 10px var(--green);
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
 }
 
 /* GRID */
@@ -87,10 +118,10 @@ body{
 }
 
 .card h2{
+  margin:0 0 14px;
   font-size:13px;
-  color:var(--muted);
   letter-spacing:1px;
-  margin-bottom:14px;
+  color:var(--muted);
 }
 
 /* INPUT */
@@ -101,7 +132,7 @@ input,select{
   border:none;
   background:rgba(0,0,0,.45);
   color:#fff;
-  margin-bottom:12px;
+  margin-bottom:10px;
 }
 
 button{
@@ -127,43 +158,30 @@ button:active{transform:scale(.96)}
   background:linear-gradient(135deg,#4cc9f0,#4895ef);
 }
 
-/* MATRIX LIST */
-.list{
-  margin-top:10px;
+/* MATRIX MULTI INPUT */
+.matrix-row{
   display:flex;
-  flex-direction:column;
   gap:8px;
+  margin-bottom:10px;
 }
 
-.item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:rgba(0,0,0,.45);
-  padding:10px 14px;
-  border-radius:14px;
-  animation:fade .3s ease;
-}
+.matrix-row input{flex:2}
+.matrix-row select{flex:1}
 
-@keyframes fade{
-  from{opacity:0;transform:translateY(6px)}
-  to{opacity:1}
-}
-
-.item span{
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:70%;
-}
-
-.remove{
+.del{
   background:none;
   border:none;
   color:var(--red);
-  font-size:16px;
+  font-size:18px;
   cursor:pointer;
+}
+
+/* PREVIEW */
+.preview{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+  word-break:break-all;
 }
 
 /* FOOTER */
@@ -180,6 +198,7 @@ button:active{transform:scale(.96)}
 
 <div class="app">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="brand">
       <img src="HOREG LOGO.png" class="logo">
@@ -188,9 +207,12 @@ button:active{transform:scale(.96)}
         <span>by HABIL_QW</span>
       </div>
     </div>
-    <div class="status"><div class="dot"></div> ONLINE</div>
+    <div class="status">
+      <div class="dot"></div> ONLINE
+    </div>
   </div>
 
+  <!-- GRID -->
   <div class="grid">
 
     <!-- LAMPU -->
@@ -203,26 +225,22 @@ button:active{transform:scale(.96)}
     <!-- JADWAL -->
     <div class="card">
       <h2>SET JADWAL</h2>
-      <input type="time">
-      <input type="time">
+      <input type="time" placeholder="Waktu Nyala">
+      <input type="time" placeholder="Waktu Mati">
       <button class="btn-action">SIMPAN</button>
     </div>
 
-    <!-- MATRIX MULTI INPUT -->
+    <!-- MATRIX -->
     <div class="card">
-      <h2>MATRIX TEXT MANAGER</h2>
+      <h2>MATRIX MULTI TEXT</h2>
 
-      <input id="textInput" type="text" placeholder="Tambah teks matrix">
-      <select id="anim">
-        <option value="left">⬅️ Scroll Kiri</option>
-        <option value="right">➡️ Scroll Kanan</option>
-        <option value="up">⬆️ Ke Atas</option>
-        <option value="down">⬇️ Ke Bawah</option>
-      </select>
+      <div id="matrixInputs"></div>
 
-      <button class="btn-action" onclick="addText()">TAMBAH TEKS</button>
+      <button class="btn-action" onclick="addMatrixInput()">➕ TAMBAH TEKS</button>
+      <br><br>
+      <button class="btn-on" onclick="prepareData()">KIRIM KE MATRIX</button>
 
-      <div class="list" id="list"></div>
+      <div id="preview" class="preview"></div>
     </div>
 
   </div>
@@ -234,21 +252,47 @@ button:active{transform:scale(.96)}
 </div>
 
 <script>
-function addText(){
-  const input = document.getElementById('textInput');
-  if(input.value.trim()==="") return;
-
-  const list = document.getElementById('list');
-  const item = document.createElement('div');
-  item.className = 'item';
-
-  item.innerHTML = `
-    <span>${input.value}</span>
-    <button class="remove" onclick="this.parentElement.remove()">✖</button>
+function addMatrixInput(){
+  const row = document.createElement("div");
+  row.className = "matrix-row";
+  row.innerHTML = `
+    <input type="text" placeholder="Teks Matrix">
+    <select>
+      <option value="left">⬅️ Kiri</option>
+      <option value="right">➡️ Kanan</option>
+      <option value="up">⬆️ Atas</option>
+      <option value="down">⬇️ Bawah</option>
+    </select>
+    <button class="del" onclick="this.parentElement.remove()">✖</button>
   `;
+  document.getElementById("matrixInputs").appendChild(row);
+}
 
-  list.appendChild(item);
-  input.value="";
+// input awal otomatis
+addMatrixInput();
+
+function prepareData(){
+  const rows = document.querySelectorAll(".matrix-row");
+  let payload = [];
+
+  rows.forEach(row=>{
+    const text = row.querySelector("input").value.trim();
+    const anim = row.querySelector("select").value;
+    if(text !== ""){
+      payload.push(`${text},${anim}`);
+    }
+  });
+
+  if(payload.length === 0){
+    alert("Tidak ada teks!");
+    return;
+  }
+
+  const finalData = payload.join(";");
+  document.getElementById("preview").innerText =
+    "DATA SIAP KE ESP:\n" + finalData;
+
+  console.log(finalData);
 }
 </script>
 

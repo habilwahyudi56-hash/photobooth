@@ -6,7 +6,6 @@
 
 <title>Smart Room Control | HABIL_QW</title>
 
-<!-- ICON -->
 <link rel="icon" href="HOREG LOGO.png">
 <link rel="apple-touch-icon" href="HOREG LOGO.png">
 <meta name="theme-color" content="#0b1020">
@@ -20,7 +19,7 @@
   --green:#21ff8b;
   --red:#ff4d4d;
   --blue:#4cc9f0;
-  --text:#ffffff;
+  --text:#fff;
   --muted:#9aa4c7;
 }
 
@@ -124,7 +123,7 @@ body{
   color:var(--muted);
 }
 
-/* INPUT */
+/* INPUT UMUM */
 input,select{
   width:100%;
   padding:13px;
@@ -135,6 +134,7 @@ input,select{
   margin-bottom:10px;
 }
 
+/* BUTTON */
 button{
   width:100%;
   padding:14px;
@@ -158,22 +158,44 @@ button:active{transform:scale(.96)}
   background:linear-gradient(135deg,#4cc9f0,#4895ef);
 }
 
-/* MATRIX MULTI INPUT */
+/* MATRIX */
 .matrix-row{
   display:flex;
-  gap:8px;
-  margin-bottom:10px;
+  gap:10px;
+  margin-bottom:12px;
 }
 
-.matrix-row input{flex:2}
-.matrix-row select{flex:1}
+.input-wrap{
+  position:relative;
+  flex:2;
+}
 
-.del{
-  background:none;
+.input-wrap input{
+  width:100%;
+  padding:13px 40px 13px 13px;
+  border-radius:14px;
   border:none;
+  background:rgba(0,0,0,.45);
+  color:#fff;
+}
+
+.input-wrap .close{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
   color:var(--red);
-  font-size:18px;
+  font-size:14px;
   cursor:pointer;
+  opacity:.7;
+}
+
+.input-wrap .close:hover{
+  opacity:1;
+}
+
+.matrix-row select{
+  flex:1;
 }
 
 /* PREVIEW */
@@ -225,8 +247,8 @@ button:active{transform:scale(.96)}
     <!-- JADWAL -->
     <div class="card">
       <h2>SET JADWAL</h2>
-      <input type="time" placeholder="Waktu Nyala">
-      <input type="time" placeholder="Waktu Mati">
+      <input type="time">
+      <input type="time">
       <button class="btn-action">SIMPAN</button>
     </div>
 
@@ -255,20 +277,24 @@ button:active{transform:scale(.96)}
 function addMatrixInput(){
   const row = document.createElement("div");
   row.className = "matrix-row";
+
   row.innerHTML = `
-    <input type="text" placeholder="Teks Matrix">
+    <div class="input-wrap">
+      <input type="text" placeholder="Teks Matrix">
+      <span class="close" onclick="this.closest('.matrix-row').remove()">✖</span>
+    </div>
     <select>
       <option value="left">⬅️ Kiri</option>
       <option value="right">➡️ Kanan</option>
       <option value="up">⬆️ Atas</option>
       <option value="down">⬇️ Bawah</option>
     </select>
-    <button class="del" onclick="this.parentElement.remove()">✖</button>
   `;
+
   document.getElementById("matrixInputs").appendChild(row);
 }
 
-// input awal otomatis
+// satu input awal
 addMatrixInput();
 
 function prepareData(){

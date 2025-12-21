@@ -5,7 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Smart Room Control | HABIL_QW</title>
-<link rel="icon" href="HOREG LOGO.png" type="image/png">
+
+<!-- FAVICON DESKTOP -->
+<link rel="icon" type="image/png" sizes="32x32" href="horeg-logo.png">
+<link rel="icon" type="image/png" sizes="16x16" href="horeg-logo.png">
+
+<!-- ICON MOBILE / ANDROID / iOS -->
+<link rel="apple-touch-icon" sizes="180x180" href="horeg-logo.png">
+<link rel="icon" type="image/png" sizes="192x192" href="horeg-logo.png">
+<link rel="icon" type="image/png" sizes="512x512" href="horeg-logo.png">
+
+<meta name="theme-color" content="#0b1020">
 
 <style>
 :root {
@@ -21,23 +31,25 @@
   --muted:#a0a8c8;
 }
 
-* {
-  box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+* { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+html, body {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
   background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid));
   color: var(--txt);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 14px;
+  padding: 12px;
 }
 
-/* APP CONTAINER */
+/* APP */
 .app {
   width: 100%;
   max-width: 1100px;
@@ -46,12 +58,6 @@ body {
   backdrop-filter: blur(18px);
   box-shadow: 0 30px 80px rgba(0,0,0,.8);
   padding: 18px;
-  animation: fadeIn .8s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* HEADER */
@@ -59,9 +65,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
   flex-wrap: wrap;
   gap: 14px;
+  margin-bottom: 20px;
 }
 
 .brand {
@@ -85,8 +91,8 @@ body {
 }
 
 .brand h1 {
-  font-size: 20px;
   margin: 0;
+  font-size: 20px;
   letter-spacing: 1px;
 }
 
@@ -121,7 +127,7 @@ body {
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
 }
 
@@ -131,17 +137,10 @@ body {
   border-radius: 22px;
   padding: 18px;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
-  transition: transform .3s ease, box-shadow .3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,.6);
 }
 
 .card h2 {
   font-size: 13px;
-  letter-spacing: 1px;
   color: var(--muted);
   margin: 0 0 14px;
 }
@@ -155,29 +154,19 @@ button {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-button:active {
-  transform: scale(.96);
 }
 
 .btn-on {
   background: linear-gradient(135deg,#1cff7a,#0bbf5e);
-  color: #002b18;
-  box-shadow: 0 0 14px rgba(34,255,136,.5);
 }
 
 .btn-off {
   background: linear-gradient(135deg,#ff4d4d,#c9184a);
   color: #fff;
-  box-shadow: 0 0 14px rgba(255,77,77,.45);
 }
 
 .btn-action {
   background: linear-gradient(135deg,#4cc9f0,#4895ef);
-  color: #001b2e;
-  box-shadow: 0 0 14px rgba(76,201,240,.45);
 }
 
 /* FORM */
@@ -188,13 +177,7 @@ input {
   border: none;
   background: rgba(0,0,0,.45);
   color: var(--txt);
-  font-size: 14px;
-  outline: none;
   margin-bottom: 12px;
-}
-
-input:focus {
-  box-shadow: 0 0 14px rgba(76,201,240,.45);
 }
 
 /* FOOTER */
@@ -203,12 +186,6 @@ input:focus {
   text-align: center;
   font-size: 12px;
   color: var(--muted);
-}
-
-/* MOBILE OPTIMIZATION */
-@media (max-width: 600px) {
-  .brand h1 { font-size: 18px; }
-  .logo { width: 46px; height: 46px; }
 }
 </style>
 </head>
@@ -219,7 +196,7 @@ input:focus {
 
   <div class="header">
     <div class="brand">
-      <img src="HOREG LOGO.png" class="logo" alt="Logo">
+      <img src="horeg-logo.png" class="logo" alt="Logo">
       <div>
         <h1>SMART ROOM CONTROL</h1>
         <span>by HABIL_QW</span>
@@ -231,7 +208,6 @@ input:focus {
   </div>
 
   <div class="grid">
-
     <div class="card">
       <h2>RELAY CONTROL</h2>
       <button class="btn-on">ON</button><br><br>
@@ -249,11 +225,10 @@ input:focus {
       <input type="text" placeholder="Masukkan teks...">
       <button class="btn-action">SEND</button>
     </div>
-
   </div>
 
   <div class="footer">
-    © 2025 HABIL_QW • Smart Room Control System
+    © 2025 HABIL_QW • Smart Room Control
   </div>
 
 </div>

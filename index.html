@@ -7,15 +7,20 @@
 
 <style>
 :root {
-  --bg1: #0f0c29;
-  --bg2: #302b63;
-  --bg3: #24243e;
-  --card: rgba(255,255,255,0.08);
-  --neon: #4cc9f0;
-  --purple: #9b5de5;
-  --danger: #ff4d6d;
+  --bg1: #0a0f1e;
+  --bg2: #1a1f3c;
+  --bg3: #0f172a;
+
+  --card: rgba(255,255,255,0.07);
+
+  --green: #22ff88;
+  --green-soft: rgba(34,255,136,0.4);
+
+  --red: #ff4d4d;
+  --red-soft: rgba(255,77,77,0.45);
+
   --text: #ffffff;
-  --muted: #b8c1ec;
+  --muted: #aab4d4;
 }
 
 * {
@@ -28,15 +33,15 @@ body {
   min-height: 100vh;
   background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3));
   background-size: 400% 400%;
-  animation: bgMove 15s ease infinite;
+  animation: bgFlow 18s ease infinite;
   color: var(--text);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* BACKGROUND ANIMATION */
-@keyframes bgMove {
+/* BACKGROUND */
+@keyframes bgFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -48,14 +53,14 @@ body {
   max-width: 430px;
   padding: 18px;
   border-radius: 26px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.35));
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.35));
   backdrop-filter: blur(18px);
-  box-shadow: 0 30px 70px rgba(0,0,0,0.8);
-  animation: appFade 1s ease;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+  animation: appIn 0.9s cubic-bezier(.25,.8,.25,1);
 }
 
-@keyframes appFade {
-  from { opacity: 0; transform: translateY(20px); }
+@keyframes appIn {
+  from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -78,7 +83,7 @@ body {
   color: var(--muted);
 }
 
-/* STATUS DOT */
+/* STATUS */
 .status {
   display: flex;
   align-items: center;
@@ -89,16 +94,15 @@ body {
 .dot {
   width: 10px;
   height: 10px;
-  background: #00ff9c;
+  background: var(--green);
   border-radius: 50%;
-  box-shadow: 0 0 10px #00ff9c;
-  animation: pulse 1.5s infinite;
+  animation: dotBreath 2.2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 5px #00ff9c; }
-  50% { box-shadow: 0 0 15px #00ff9c; }
-  100% { box-shadow: 0 0 5px #00ff9c; }
+@keyframes dotBreath {
+  0% { box-shadow: 0 0 6px var(--green-soft); }
+  50% { box-shadow: 0 0 14px var(--green); }
+  100% { box-shadow: 0 0 6px var(--green-soft); }
 }
 
 /* CARD */
@@ -107,12 +111,12 @@ body {
   border-radius: 20px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-  animation: slideUp 0.8s ease;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  animation: cardUp 0.8s cubic-bezier(.25,.8,.25,1);
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(15px); }
+@keyframes cardUp {
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -132,41 +136,41 @@ body {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
-  position: relative;
-  overflow: hidden;
+  transition: 
+    transform 0.25s cubic-bezier(.25,.8,.25,1),
+    box-shadow 0.3s ease,
+    opacity 0.25s ease;
 }
 
+/* ON BUTTON */
 .btn.on {
-  background: linear-gradient(135deg, var(--neon), var(--purple));
-  color: #000;
-  box-shadow: 0 0 20px rgba(76,201,240,0.5);
+  background: linear-gradient(135deg, #1cff7a, #0bbf5e);
+  color: #002b18;
+  box-shadow: 0 0 14px var(--green-soft);
+  animation: greenPulse 3s ease-in-out infinite;
 }
 
+@keyframes greenPulse {
+  0%,100% { box-shadow: 0 0 10px var(--green-soft); }
+  50% { box-shadow: 0 0 22px var(--green); }
+}
+
+/* OFF BUTTON */
 .btn.off {
-  background: linear-gradient(135deg, var(--danger), #c9184a);
+  background: linear-gradient(135deg, #ff4d4d, #c9184a);
   color: #fff;
+  box-shadow: 0 0 14px var(--red-soft);
+  animation: redPulse 3s ease-in-out infinite;
+}
+
+@keyframes redPulse {
+  0%,100% { box-shadow: 0 0 10px var(--red-soft); }
+  50% { box-shadow: 0 0 22px var(--red); }
 }
 
 .btn:hover {
-  transform: translateY(-2px) scale(1.02);
-}
-
-/* BUTTON GLOW ANIMATION */
-.btn.on::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 60%);
-  animation: glow 3s infinite;
-}
-
-@keyframes glow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  transform: translateY(-2px);
+  opacity: 0.96;
 }
 
 /* INPUT */
@@ -179,11 +183,11 @@ input {
   color: var(--text);
   font-size: 14px;
   outline: none;
-  transition: 0.3s;
+  transition: box-shadow 0.3s ease;
 }
 
 input:focus {
-  box-shadow: 0 0 12px var(--neon);
+  box-shadow: 0 0 14px rgba(76,201,240,0.4);
 }
 
 /* ROW */
@@ -198,7 +202,7 @@ input:focus {
   font-size: 11px;
   color: var(--muted);
   margin-top: 10px;
-  opacity: 0.8;
+  opacity: 0.75;
 }
 </style>
 </head>
@@ -207,7 +211,6 @@ input:focus {
 
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <div>
       <h1>SMART ROOM CONTROL</h1>
@@ -218,7 +221,6 @@ input:focus {
     </div>
   </div>
 
-  <!-- RELAY -->
   <div class="card">
     <h2>RELAY CONTROL</h2>
     <div class="row">
@@ -227,30 +229,20 @@ input:focus {
     </div>
   </div>
 
-  <!-- TIMER -->
   <div class="card">
     <h2>TIMER</h2>
     <input type="time">
     <button class="btn on" style="margin-top:12px">SAVE</button>
   </div>
 
-  <!-- TEXT -->
   <div class="card">
     <h2>DISPLAY TEXT</h2>
     <input type="text" placeholder="Masukkan teks...">
     <button class="btn on" style="margin-top:12px">SEND</button>
   </div>
 
-  <!-- STATUS -->
-  <div class="card">
-    <h2>DEVICE INFO</h2>
-    <p style="margin:0;font-size:14px;">
-      ESP Device • Smart Room System
-    </p>
-  </div>
-
   <div class="footer">
-    © 2025 HABIL_QW • Smart IoT System
+    © 2025 HABIL_QW • Smart Room System
   </div>
 
 </div>

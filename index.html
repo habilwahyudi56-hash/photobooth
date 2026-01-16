@@ -3,89 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Photo Booth ❤️</title>
+    <title>Valentine Photo Booth ❤️</title>
     <style>
-        /* --- TEMA WARNA & GAYA --- */
-        :root {
-            --primary: #d62828; 
-            --secondary: #ffccd5; 
-            --bg: #fff0f3; 
-        }
-
+        /* --- TEMA & RESET --- */
+        :root { --primary: #d62828; --bg: #fff0f3; }
+        
         body {
             font-family: 'Courier New', cursive;
             background-color: var(--bg);
             color: var(--primary);
             text-align: center;
             margin: 0;
-            padding: 10px;
+            
+            /* PERBAIKAN SCROLL: */
+            padding-top: 30px;      /* Jarak atas */
+            padding-bottom: 100px;  /* Jarak bawah luas biar tombol gak ketutup menu HP */
+            overflow-y: auto;       /* Wajib bisa scroll ke bawah */
+            
+            /* Hapus justify-content: center agar tidak mengunci layar */
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            justify-content: center; 
-        }
-
-        h1 { 
-            margin-bottom: 5px; 
-            font-size: 1.5rem; 
-            text-shadow: 2px 2px 0px white;
-        }
-        
-        p { 
-            margin-top: 0; 
-            font-size: 0.9rem; 
-            margin-bottom: 15px;
         }
 
         .container {
-            width: 100%;
+            width: 90%; /* Pakai % agar aman di HP kecil */
             max-width: 450px; 
             background: white;
             padding: 15px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(214, 40, 40, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             position: relative;
-            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
-        /* --- LAYAR KAMERA RESPONSIF --- */
+        /* KAMERA */
         #camera-container {
             position: relative;
             width: 100%;
             aspect-ratio: 3 / 4; 
-            max-height: 60vh; 
             background: #000;
             border-radius: 15px;
             overflow: hidden;
             display: none; 
             margin-bottom: 20px;
         }
+        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); 
-        }
-
-        /* --- LAYAR HASIL --- */
-        #result-container {
-            display: none;
-            width: 100%;
-        }
-
+        /* HASIL */
+        #result-container { display: none; width: 100%; }
+        
         canvas {
             width: 100%;
             height: auto;
-            max-height: 70vh; 
+            /* Hapus max-height agar tidak gepeng, biarkan memanjang */
             object-fit: contain;
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            touch-action: none;
+            
+            /* PERBAIKAN PENTING: */
+            /* touch-action: none;  <-- INI SUDAH DIHAPUS AGAR BISA SCROLL SAAT SENTUH FOTO */
         }
 
-        /* --- TOMBOL --- */
+        /* TOMBOL */
         button {
             background-color: var(--primary);
             color: white;
@@ -96,56 +76,34 @@
             cursor: pointer;
             margin: 10px 5px;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.1s;
-            max-width: 100%; 
-            white-space: nowrap;
         }
-        button:active { transform: scale(0.95); }
-
-        /* Tombol Simpan dibuat lebih menonjol */
-        .save-btn {
-            background-color: #2a9d8f; /* Warna hijau/teal agar beda */
+        
+        .save-btn { 
+            background-color: #2a9d8f; 
+            width: 100%; /* Tombol simpan lebar agar mudah dipencet */
+            padding: 15px;
             font-size: 1.1rem;
-            padding: 15px 30px;
+            margin-top: 15px;
         }
 
-        /* --- HITUNG MUNDUR --- */
         #countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 5rem;
-            color: white;
-            font-weight: bold;
-            text-shadow: 0 0 20px var(--primary);
-            display: none;
-            z-index: 10;
+            font-size: 5rem; color: white; font-weight: bold;
+            display: none; z-index: 10;
         }
-
+        
         .hidden { display: none !important; }
-
-        /* --- KHUSUS LAPTOP/DESKTOP --- */
-        @media (min-width: 768px) {
-            body {
-                background-image: radial-gradient(#ffccd5 2px, transparent 2px);
-                background-size: 30px 30px;
-            }
-            .container {
-                box-shadow: 0 20px 50px rgba(214, 40, 40, 0.3);
-            }
-        }
     </style>
 </head>
 <body>
 
-    <h1>💌 Valentine Photobooth</h1>
-    <p>Special for My Love</p>
+    <h1 style="margin-bottom: 5px;">💌 Valentine Photobooth</h1>
+    <p style="margin-top:0;">Special for My Love</p>
 
     <div class="container">
         <div id="start-screen">
-            <p>Siapkan senyum terbaikmu! 😁</p>
+            <p>Siap senyum? 😁</p>
             <button onclick="startCamera()">📸 Buka Kamera</button>
         </div>
 
@@ -157,47 +115,38 @@
         <button id="snap-btn" class="hidden" onclick="startPhotoSequence()">Mulai Foto (3 Gaya)</button>
 
         <div id="result-container">
-            <p style="color: #d62828; font-weight: bold; font-size: 1.1rem;">✨ Selesai! Cantik Banget! ✨</p>
+            <p style="font-weight: bold;">✨ Hasil Foto Kita ✨</p>
             
             <canvas id="photo-canvas"></canvas>
 
-            <div style="margin-top: 25px;">
+            <div>
                 <button class="save-btn" onclick="downloadImage()">💾 Simpan ke Galeri</button>
             </div>
             
             <br>
-            <button onclick="location.reload()" style="background-color: #555; font-size: 0.8rem; padding: 10px 20px;">Ulangi Foto</button>
+            <button onclick="location.reload()" style="background:#555; font-size:0.8rem; margin-top:10px;">Foto Ulang</button>
         </div>
     </div>
 
     <img id="frame-source" src="frame.png" alt="Frame" style="display:none;" crossorigin="anonymous">
 
     <script>
-        // --- KONFIGURASI KOORDINAT (TIDAK DIUBAH SAMA SEKALI) ---
+        // --- CONFIG ---
         const config = {
-            marginLeft: 0.06,   
-            width: 0.88,        
-            height: 0.25,       
+            marginLeft: 0.06, width: 0.88, height: 0.25,       
             yPos: [ 0.055, 0.337, 0.589 ]
         };
-
-        // ----------------------------------------------
 
         const video = document.getElementById('video');
         const canvas = document.getElementById('photo-canvas');
         const ctx = canvas.getContext('2d');
         const frameImg = document.getElementById('frame-source');
-        const cameraContainer = document.getElementById('camera-container');
-        const resultContainer = document.getElementById('result-container');
-        const startScreen = document.getElementById('start-screen');
-        const snapBtn = document.getElementById('snap-btn');
-        const countdownEl = document.getElementById('countdown');
 
         let photos = [];
-        // Variabel drawing/sticker sudah dihapus
 
         async function startCamera() {
             try {
+                // Settings kamera responsif HP
                 const constraints = { 
                     video: { 
                         facingMode: "user", 
@@ -208,107 +157,87 @@
                 };
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 video.srcObject = stream;
-                startScreen.classList.add('hidden');
-                cameraContainer.style.display = 'block';
-                snapBtn.classList.remove('hidden');
+                document.getElementById('start-screen').classList.add('hidden');
+                document.getElementById('camera-container').style.display = 'block';
+                document.getElementById('snap-btn').classList.remove('hidden');
             } catch (err) {
-                alert("Gagal akses kamera! Pastikan dibuka di HTTPS/localhost dan izinkan akses.");
+                alert("Gagal akses kamera! Pastikan dibuka di HTTPS.");
             }
         }
 
         function startPhotoSequence() {
-            snapBtn.classList.add('hidden');
+            document.getElementById('snap-btn').classList.add('hidden');
             photos = [];
             takeOnePhoto(0);
         }
 
         function takeOnePhoto(count) {
             if (count >= 3) { finishPhotos(); return; }
-            
             let timeLeft = 3;
-            countdownEl.style.display = 'block';
-            countdownEl.innerText = timeLeft;
+            const cd = document.getElementById('countdown');
+            cd.style.display = 'block';
+            cd.innerText = timeLeft;
 
             const timer = setInterval(() => {
                 timeLeft--;
-                countdownEl.innerText = timeLeft;
+                cd.innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    countdownEl.style.display = 'none';
-                    captureFrame();
+                    cd.style.display = 'none';
+                    
+                    const temp = document.createElement('canvas');
+                    temp.width = video.videoWidth;
+                    temp.height = video.videoHeight;
+                    const tCtx = temp.getContext('2d');
+                    tCtx.translate(temp.width, 0); tCtx.scale(-1, 1);
+                    tCtx.drawImage(video, 0, 0, temp.width, temp.height);
+                    photos.push(temp);
+                    
                     setTimeout(() => takeOnePhoto(count + 1), 1000);
                 }
             }, 1000);
         }
 
-        function captureFrame() {
-            cameraContainer.style.opacity = 0;
-            setTimeout(() => cameraContainer.style.opacity = 1, 100);
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = video.videoWidth;
-            tempCanvas.height = video.videoHeight;
-            const tCtx = tempCanvas.getContext('2d');
-            tCtx.translate(tempCanvas.width, 0);
-            tCtx.scale(-1, 1);
-            tCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-            photos.push(tempCanvas);
-        }
-
         function finishPhotos() {
-            cameraContainer.style.display = 'none';
-            resultContainer.style.display = 'block';
-
-            if (frameImg.complete && frameImg.naturalWidth !== 0) {
-                renderComposition();
-            } else {
-                frameImg.onload = renderComposition;
-                frameImg.onerror = () => alert("Gagal memuat frame.png!");
-            }
-        }
-
-        function renderComposition() {
-            const fw = frameImg.naturalWidth;
-            const fh = frameImg.naturalHeight;
-
+            document.getElementById('camera-container').style.display = 'none';
+            document.getElementById('result-container').style.display = 'block';
+            
+            // Render
+            const fw = frameImg.naturalWidth || 1000;
+            const fh = frameImg.naturalHeight || 3000;
             canvas.width = fw;
             canvas.height = fh;
             ctx.clearRect(0, 0, fw, fh);
+            
+            // Background putih jaga-jaga
+            ctx.fillStyle = "white"; ctx.fillRect(0,0, fw, fh);
 
             const photoW = fw * config.width;
             const photoH = fh * config.height;
             const photoX = fw * config.marginLeft;
 
+            // Foto
             photos.forEach((photo, i) => {
                 const photoY = fh * config.yPos[i];
-                const imgRatio = photo.width / photo.height;
-                const targetRatio = photoW / photoH;
-                let sx, sy, sWidth, sHeight;
-
-                if (imgRatio > targetRatio) {
-                    sHeight = photo.height;
-                    sWidth = photo.height * targetRatio;
-                    sx = (photo.width - sWidth) / 2;
-                    sy = 0;
-                } else {
-                    sWidth = photo.width;
-                    sHeight = photo.width / targetRatio;
-                    sx = 0;
-                    sy = (photo.height - sHeight) / 2;
-                }
-                ctx.drawImage(photo, sx, sy, sWidth, sHeight, photoX, photoY, photoW, photoH);
+                const r1 = photo.width / photo.height;
+                const r2 = photoW / photoH;
+                let sx, sy, sw, sh;
+                if (r1 > r2) { sh = photo.height; sw = photo.height * r2; sx = (photo.width - sw)/2; sy = 0; }
+                else { sw = photo.width; sh = photo.width / r2; sx = 0; sy = (photo.height - sh)/2; }
+                ctx.drawImage(photo, sx, sy, sw, sh, photoX, photoY, photoW, photoH);
             });
 
-            ctx.drawImage(frameImg, 0, 0, fw, fh);
-            
-            // Fungsi saveState() dihapus karena tidak ada fitur undo
+            // Bingkai
+            if (frameImg.complete && frameImg.naturalWidth !== 0) {
+                ctx.drawImage(frameImg, 0, 0, fw, fh);
+            }
+
             if(video.srcObject) video.srcObject.getTracks().forEach(track => track.stop());
         }
 
-        // SEMUA FUNGSI DEKORASI (selectTool, drawOnCanvas, saveState, undoLast) TELAH DIHAPUS
-
         function downloadImage() {
             const link = document.createElement('a');
-            link.download = 'Valentine-Memory.png';
+            link.download = 'Valentine-Strip.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
